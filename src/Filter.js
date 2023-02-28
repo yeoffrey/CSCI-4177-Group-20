@@ -1,5 +1,6 @@
 import React from 'react'
 import './Filter.css'
+import BookSearch from "./bookSearch";
 
  
 export default function Filter() {
@@ -119,6 +120,7 @@ export default function Filter() {
     
   return (
     <React.Fragment>
+        <h1 style={{textAlign: "center"}}>Home</h1>
       <main>
         <div id="box">
             <dl>
@@ -162,9 +164,8 @@ export default function Filter() {
         <div className="list">
         </div>
     </main>
-    <script>
-        
-    </script>
+        <BookSearch/>
     </React.Fragment>
+
   )
 }

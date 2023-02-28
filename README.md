@@ -13,7 +13,7 @@
 ## Authors
 
 * [Kaushik Dhamodaran](ks695041@dal.ca) - *(Maintainer)*
-* [Name](email@dal.ca) - *(Role)*
+* [Bryce Wiedemann](br664676@dal.ca) - *(Developer)*
 * [Name](email@dal.ca) - *(Role)*
 * [Name](email@dal.ca) - *(Role)*
 * [Name](email@dal.ca) - *(Role)*
