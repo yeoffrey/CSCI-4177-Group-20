@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
+import App from './App';
+import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import {
     Navigation,
@@ -12,6 +14,7 @@ import {
 
 ReactDOM.render(
     <Router>
+        <App />
         <Navigation />
         <Routes>
             <Route path="/" element={<Home />} />
@@ -23,3 +26,4 @@ ReactDOM.render(
 
     document.getElementById("root")
 );
+reportWebVitals();
