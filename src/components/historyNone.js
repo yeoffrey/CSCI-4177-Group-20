@@ -18,15 +18,15 @@ function HistoryNone() {
                             <div className="row">
                                 <div className="col">
                                     <h1><img src={book} className="img-fluid" alt=""/></h1>
-                                    <h2>3 Books read</h2>
+                                    <h2>0 Books read</h2>
                                 </div>
                                 <div className="col">
                                     <h1><img src={page} className="img-fluid" alt=""/></h1>
-                                    <h2>1388 Pages read</h2>
+                                    <h2>0 Pages read</h2>
                                 </div>
                                 <div className="col">
                                     <img src={clock} className="img-fluid" alt=""/>
-                                    <h2>Approx. 46 Hours spent reading</h2>
+                                    <h2>Approx. 0 Hours spent reading</h2>
                                 </div>
                             </div>
                         </div>

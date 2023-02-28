@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
+import {Link} from "react-router-dom";
 
-const bookSearch = () => {
+const BookSearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [books, setBooks] = useState([]);
   const [apiKey, setApiKey] = useState("AIzaSyDayUQL9JZHgC_Yk5rQFtFgfK59208X2JY")
 
-  const handleSearch = async (e) => {
+  const HandleSearch = async (e) => {
     e.preventDefault();
     const url = `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}`;
     const response = await axios.get(url);
@@ -15,7 +16,8 @@ const bookSearch = () => {
 
   return (
     <div>
-      <form onSubmit={handleSearch}>
+      <h1>Home</h1>
+      <form onSubmit={HandleSearch}>
         <input
           type="text"
           value={searchQuery}
@@ -40,4 +42,4 @@ const bookSearch = () => {
   );
 };
 
-export default bookSearch;
+export default BookSearch;
