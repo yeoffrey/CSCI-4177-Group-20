@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import {Link} from "react-router-dom";
 
 const BookSearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -16,8 +15,7 @@ const BookSearch = () => {
 
   return (
     <div>
-      <h1>Home</h1>
-      <form onSubmit={HandleSearch}>
+      <form onSubmit={HandleSearch} style={{textAlign: "center"}}>
         <input
           type="text"
           value={searchQuery}

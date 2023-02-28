@@ -11,12 +11,13 @@ import {
     AddBook,
 } from "./components";
 import BookSearch from "./bookSearch";
+import Filter from "./Filter";
 
 ReactDOM.render(
     <Router>
         <Navigation />
         <Routes>
-            <Route path="/" element={<BookSearch />} />
+            <Route path="/" element={ <Filter />} />
             <Route path="/historyNone" element={<HistoryNone />} />
             <Route path="/history" element={<History />} />
             <Route path="/addBook" element={<AddBook />} />
