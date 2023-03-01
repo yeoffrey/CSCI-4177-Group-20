@@ -13,10 +13,10 @@
 ## Authors
 
 * [Kaushik Dhamodaran](ks695041@dal.ca) - *(Maintainer)*
-* [Bryce Wiedemann](br664676@dal.ca) - *(Developer)*
-* [Name](email@dal.ca) - *(Role)*
-* [Name](email@dal.ca) - *(Role)*
-* [Name](email@dal.ca) - *(Role)*
+* [Bryce Wiedemann](br664676@dal.ca) - *(Maintainer)*
+* [Geoffrey Belcher](Gbelcher@dal.ca) - *(Maintainer)*
+* [Yuchen Ye](Yc786880@dal.ca) - *(Maintainer)*
+* [Yuxuan Wang](yx703587@dal.ca) - *(Maintainer)*
 
 
 ## Getting Started
