@@ -29,7 +29,7 @@ export default function Login() {
             {/* fill in credentials and login validation */}
             <form onSubmit={handleSubmit} autoComplete="off" className='d-flex justify-content-center align-items-center mb-3'>
                 <div className='form-group p-4 p-sm-3 myform'>
-                <h2>Login</h2>
+                    <h2>Login</h2>
                     <div className='form-group mb-3'>
                         <label htmlFor="username" className='control-label labels col-sm-3'>Username: </label>
                         <input type="text"
@@ -53,11 +53,12 @@ export default function Login() {
                     </div>
 
                     <input type="submit" className="btn btn-primary" value="Login" disabled={isSubmitting} />
-
                 </div>
             </form>
-            <Link to="/recover">Forget username or password? Click here to recover!</Link><br />
-            <Link to="/register">No account yet? Register Now!</Link>
+            <div style={{textAlign: "center"}}>
+                <Link to="/recover">Forget username or password? Click here to recover!</Link><br />
+                <Link to="/register">No account yet? Register Now!</Link>
+            </div>
         </div>
     );
 }
