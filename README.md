@@ -8,7 +8,7 @@
 * *Date Created*: 27 JAN 2023
 * *Last Modification Date*: DD MMM YYYY
 * *Gitlab URL*: <https://git.cs.dal.ca/dhamodaran/4177-group-project>
-* *Netlify URL*: <http://example.com/>
+* *Netlify URL*: <https://4177group20prototype.netlify.app/>
 
 ## Authors
 
