@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
 const path = require('path')
+const cors = require('cors')
 
 const app = express()
 const PORT = process.env.PORT || 8080
@@ -46,7 +47,7 @@ const newBook = new Book(data)
 //   .catch(err => {
 //     console.error(err);
 //   });
-
+app.use(cors())
 app.use(morgan('tiny'))
 
 app.get('/api',(req,res)=>{
