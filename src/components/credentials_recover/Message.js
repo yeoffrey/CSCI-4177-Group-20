@@ -1,13 +1,17 @@
 import React from 'react';
 import { useNavigate } from "react-router-dom";
 import { Button } from 'react-bootstrap';
+import "../../css/credentials.css";
+
 /**
  * display all kinds of system messages
+ * 
+ * @author Yuxuan(Hardison) Wang
  */
 const Message = () => {
     const navigate = useNavigate();
     return (
-        <div className='myform'>
+        <div id='message-box' className='myform'>
             <p >The username associated with this email is</p>
             <h2>user1</h2>
 
