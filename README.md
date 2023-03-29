@@ -8,15 +8,15 @@
 * *Date Created*: 27 JAN 2023
 * *Last Modification Date*: DD MMM YYYY
 * *Gitlab URL*: <https://git.cs.dal.ca/dhamodaran/4177-group-project>
-* *Netlify URL*: <http://example.com/>
+* *Netlify URL*: <https://4177group20prototype.netlify.app/>
 
 ## Authors
 
 * [Kaushik Dhamodaran](ks695041@dal.ca) - *(Maintainer)*
-* [Name](email@dal.ca) - *(Role)*
-* [Name](email@dal.ca) - *(Role)*
-* [Name](email@dal.ca) - *(Role)*
-* [Name](email@dal.ca) - *(Role)*
+* [Bryce Wiedemann](br664676@dal.ca) - *(Maintainer)*
+* [Geoffrey Belcher](Gbelcher@dal.ca) - *(Maintainer)*
+* [Yuchen Ye](Yc786880@dal.ca) - *(Maintainer)*
+* [Yuxuan Wang](yx703587@dal.ca) - *(Maintainer)*
 
 
 ## Getting Started
