@@ -6,7 +6,10 @@
  * generated from auth0 official dashboard: https://manage.auth0.com/
  */
 
-function login(email, password, callback) {
+const WrongUsernameOrPasswordError = (email) => {
+  return "Wrong Username Or Password";
+}
+export function login(email, password, callback) {
   const bcrypt = require('bcrypt');
   const MongoClient = require('mongodb@3.1.4').MongoClient;
   const client = new MongoClient('mongodb+srv://4177:4177@4177library.gxpxb0d.mongodb.net/test');
@@ -39,7 +42,7 @@ function login(email, password, callback) {
 }
 
 
-function create(user, callback) {
+export function create(user, callback) {
   const bcrypt = require('bcrypt');
   const MongoClient = require('mongodb@3.1.4').MongoClient;
   const client = new MongoClient('mongodb+srv://4177:4177@4177library.gxpxb0d.mongodb.net/test');
@@ -76,7 +79,7 @@ function create(user, callback) {
 }
 
 
-function verify (email, callback) {
+export function verify (email, callback) {
   const MongoClient = require('mongodb@3.1.4').MongoClient;
   const client = new MongoClient('mongodb+srv://4177:4177@4177library.gxpxb0d.mongodb.net/test');
 
@@ -97,7 +100,7 @@ function verify (email, callback) {
 }
 
 
-function changePassword(email, newPassword, callback) {
+export function changePassword(email, newPassword, callback) {
   const bcrypt = require('bcrypt');
   const MongoClient = require('mongodb@3.1.4').MongoClient;
   const client = new MongoClient('mongodb+srv://4177:4177@4177library.gxpxb0d.mongodb.net/test');
@@ -124,7 +127,7 @@ function changePassword(email, newPassword, callback) {
 }
 
 
-function getByEmail(email, callback) {
+export function getByEmail(email, callback) {
   const MongoClient = require('mongodb@3.1.4').MongoClient;
   const client = new MongoClient('mongodb+srv://4177:4177@4177library.gxpxb0d.mongodb.net/test');
 
@@ -150,7 +153,7 @@ function getByEmail(email, callback) {
 }
 
 
-function remove(id, callback) {
+export function remove(id, callback) {
   const MongoClient = require('mongodb@3.1.4').MongoClient;
   const client = new MongoClient('mongodb+srv://4177:4177@4177library.gxpxb0d.mongodb.net/test');
 
