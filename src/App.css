@@ -36,38 +36,3 @@
     transform: rotate(360deg);
   }
 }
-/* form error */
-input.input-error,
-select.input-error {
-  border-color: red;
-}
-
-input[type=submit]:disabled {
-  opacity: 0.3;
-}
-
-.myform {
-  background-color: #01412720;
-  box-shadow: 4px 4px 4px;
-  border: 3px;
-  border-radius: 5px;
-  border-color: steelblue;
-  border-style: solid;
-  
-}
-
-.labels {
-  float: inline-start;
-  font-weight: bold;
-  text-align: left;
-  margin-bottom: 2px;
-}
-
-.error {
-  color: red;
-  font-style: italic;
-}
-
-button {
-  margin: 3px;
-}
