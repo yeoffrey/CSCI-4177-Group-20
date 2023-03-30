@@ -1,8 +1,15 @@
+/**
+ * The Login page
+ * 
+ * @author Yuxuan(Hardison) Wang
+ * 
+ */
 import React from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { loginSchema } from '../schemas/schemas.js';
 import { useFormik } from 'formik';
 import { FormLabel } from 'react-bootstrap';
+import "../css/credentials.css";
 
 // login form component
 export default function Login() {
@@ -52,7 +59,7 @@ export default function Login() {
                         {errors.password && touched.password && <p className="error">{errors.password}</p>}
                     </div>
 
-                    <input type="submit" className="btn btn-primary" value="Login" disabled={isSubmitting} />
+                    <input id="login-button" type="submit" className="btn btn-primary" value="Login" disabled={isSubmitting} />
                 </div>
             </form>
             <div style={{textAlign: "center"}}>

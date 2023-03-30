@@ -1,16 +1,20 @@
+/**
+ * credentials recovery
+ * @descp request users to enter the email associated to the account,
+ *  validates user input using formik, on click the submit button check the email in DB,
+ *  if a match exists, display the firstname. go back to the login page on click cancel button
+ * 
+ * @author Yuxuan(Hardison) Wang
+ */
+
 import React from "react";
 import { useFormik } from 'formik';
 import { recoverEmailSchema } from "../../schemas/schemas.js";
 import { useNavigate } from "react-router-dom";
 import { Form, Button } from 'react-bootstrap';
+import "../../css/credentials.css";
 
-// credentials recovery
-/**
- * @descp request users to enter the email associated to the account,
- *  validates user input using formik, on click the submit button check the email in DB,
- *  if a match exists, display the firstname. go back to the login page on click cancel button
- *  
- */
+
 export const Recover = () => {
     const navigate = useNavigate();
     const onSubmit = async (values, actions) => {
@@ -45,15 +49,17 @@ export const Recover = () => {
                     <Form.Text className='text-danger'>{errors.recover_email && touched.recover_email && errors.recover_email}</Form.Text>
                 </Form.Group>
 
-                <Button className='m-3' variant="primary" type="submit" disabled={isSubmitting}>
-                    Submit
-                </Button>
+                <Form.Group className="mb-3" id="recover-page-button">
+                    <Button className='m-3' variant="primary" type="submit" disabled={isSubmitting}>
+                        Submit
+                    </Button>
 
-                <Button className='m-3' variant="danger" type="button" onClick={() => {
-                    navigate("/login");
-                }} disabled={isSubmitting}>
-                    Cancel
-                </Button>
+                    <Button className='m-3' variant="danger" type="button" onClick={() => {
+                        navigate("/login");
+                    }} disabled={isSubmitting}>
+                        Cancel
+                    </Button>
+                </Form.Group>
             </Form>
         </div>
     );
