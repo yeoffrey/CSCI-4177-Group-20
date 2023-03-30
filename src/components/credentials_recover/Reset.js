@@ -1,9 +1,13 @@
-// reset password
-
+/**
+ * reset password
+ * 
+ * @author Yuxuan (Hardison) Wang
+ */
 import React from 'react';
 import { useFormik } from "formik";
 import { resetPasswordSchema } from '../../schemas/schemas.js';
 import { useNavigate } from 'react-router-dom';
+import "../../css/credentials.css";
 
 const Reset = () => {
     const navigate = useNavigate();
@@ -56,12 +60,14 @@ const Reset = () => {
                         {errors.confirm_password && touched.confirm_password && <p className="error">{errors.confirm_password}</p>}
                     </div>
 
-                    <input type="submit" className='btn btn-primary' disabled={isSubmitting} value="Submit" />
+                    <div id='recover-page-button'>
+                        <input type="submit" className='btn btn-primary' disabled={isSubmitting} value="Submit" />
 
-                    {/* discard changes */}
-                    <input type="button" className='btn btn-danger m-3' onClick={() => {
-                        navigate("/login");
-                    }} value="Cancel" />
+                        {/* discard changes */}
+                        <input type="button" className='btn btn-danger m-3' onClick={() => {
+                            navigate("/login");
+                        }} value="Cancel" />
+                    </div>
                 </div>
             </form>
         </div>

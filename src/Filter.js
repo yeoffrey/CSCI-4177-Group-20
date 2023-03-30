@@ -1,9 +1,21 @@
-import React from 'react'
 import './Filter.css'
 import BookSearch from "./bookSearch";
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 
- 
+
 export default function Filter() {
+    const [books, setBooks] = useState([]);
+
+    useEffect(() => {
+        axios.get('http://localhost:8080/api')
+            .then(response => {
+                setBooks(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
     window.onload = function () {
         //This is an example of the book list
         // const bookList = [{
@@ -48,12 +60,12 @@ export default function Filter() {
         //     published: "XXX",
         //     word: "XXX"
         // }]
-    
-    
+
+
         var dls = document.querySelectorAll('dl:not(.select)');
         var selected = document.querySelector('.select');
         // var list = document.querySelector('.list');
-    
+
         //get each line of the filter
         for (var i = 0; i < dls.length; i++) {
             //mark each section false
@@ -71,14 +83,14 @@ export default function Filter() {
         //             };
         //         }
         // }
-    
+
         //define a function when the section is selected
         function select(n) {
             //get each section in each line
             var dds = dls[n].querySelectorAll('dd');
             var prev = null;
             var dd = null;
-    
+
             //when each section is clicked
             for (var i = 0; i < dds.length; i++) {
                 dds[i].onclick = function () {
@@ -88,7 +100,7 @@ export default function Filter() {
                     //if there is no prev, mark it active and change the css style to red
                     this.className = 'active';
                     prev = this;
-    
+
                     var parent = this.parentNode;
                     //if the line of section has not clicked before, create the child ele for the select line
                     if (!parent.mark) {
@@ -99,7 +111,7 @@ export default function Filter() {
                     } else {
                         dd.innerHTML = this.innerHTML;
                     }
-    
+
                     //create the delete button
                     var thisDd = this;
                     var span = document.createElement('span');
@@ -109,63 +121,77 @@ export default function Filter() {
                         parent.mark = false;
                         thisDd.className = '';
                     };
-    
+
                     dd.appendChild(span);
-    
-    
+
+
                 };
             }
         }
     }
-    
-  return (
-    <React.Fragment>
-        <h1 style={{textAlign: "center"}}>Home</h1>
-      <main>
-        <div id="box">
-            <dl>
-                <dt>Status: </dt>
-                <dd>XXX</dd>
-                <dd>XXX</dd>
-            </dl>
-            <dl>
-                <dt>Genre: </dt>
-                <dd>XXX</dd>
-                <dd>XXX</dd>
-                <dd>Horror</dd>
-                <dd>XXX</dd>
-                <dd>XXX</dd>
-                <dd>XXX</dd>
-                <dd>XXX</dd>
-                <dd>XXX</dd>
-                <dd>XXX</dd>
-            </dl>
-            <dl>
-                <dt>Word: </dt>
-                <dd>XXX</dd>
-                <dd>XXX</dd>
-                <dd>XXX</dd>
-                <dd>XXX</dd>
-            </dl>
-            <dl>
-                <dt>Time Published: </dt>
-                <dd>XXX</dd>
-                <dd>XXX</dd>
-                <dd>XXX</dd>
-                <dd>XXX</dd>
-                <dd>XXX</dd>
-                <dd>XXX</dd>
-            </dl>
-            <dl className="select">
-                <dt>Selected: </dt>
-            </dl>
-    
-        </div>
-        <div className="list">
-        </div>
-    </main>
-        <BookSearch/>
-    </React.Fragment>
 
-  )
+    return (
+        <React.Fragment>
+            <h1 style={{ textAlign: "center" }}>Home</h1>
+            <main>
+                <div id="box">
+                    <dl>
+                        <dt>Status: </dt>
+                        <dd>XXX</dd>
+                        <dd>XXX</dd>
+                    </dl>
+                    <dl>
+                        <dt>Genre: </dt>
+                        <dd>XXX</dd>
+                        <dd>XXX</dd>
+                        <dd>Horror</dd>
+                        <dd>XXX</dd>
+                        <dd>XXX</dd>
+                        <dd>XXX</dd>
+                        <dd>XXX</dd>
+                        <dd>XXX</dd>
+                        <dd>XXX</dd>
+                    </dl>
+                    <dl>
+                        <dt>Word: </dt>
+                        <dd>XXX</dd>
+                        <dd>XXX</dd>
+                        <dd>XXX</dd>
+                        <dd>XXX</dd>
+                    </dl>
+                    <dl>
+                        <dt>Time Published: </dt>
+                        <dd>XXX</dd>
+                        <dd>XXX</dd>
+                        <dd>XXX</dd>
+                        <dd>XXX</dd>
+                        <dd>XXX</dd>
+                        <dd>XXX</dd>
+                    </dl>
+                    <dl className="select">
+                        <dt>Selected: </dt>
+                    </dl>
+
+                </div>
+                <div className="list">
+                </div>
+                <div>
+                    <h1>Books</h1>
+                    <ul>
+                        {books.map(book => (
+                            <li key={book._id}>
+                                <h2>{book.title}</h2>
+                                <p>Author: {book.author}</p>
+                                <p>Genre: {book.genre}</p>
+                                <p>Word count: {book.wordCount}</p>
+                                <p>Status: {book.status}</p>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </main>
+            <BookSearch />
+        </React.Fragment>
+
+    )
 }
