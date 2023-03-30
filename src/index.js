@@ -19,11 +19,13 @@ import Message from './components/credentials_recover/Message';
 import Reset from './components/credentials_recover/Reset';
 import Register from './components/Register';
 import Resetsuccess from './components/credentials_recover/Resetsuccess';
+import BookDetails from "./BookDetails";
 
 ReactDOM.render(
     <Router>
         <Navigation />
         <Routes>
+        <Route path="/books/:id" element={<BookDetails />} />
             <Route path="/" element={<Filter />} />
             <Route path="/historyNone" element={<HistoryNone />} />
             <Route path="/history" element={<History />} />

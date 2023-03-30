@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
-import './bookSearch.css';
+//adding link component
+import { Link } from "react-router-dom";
+import "./bookSearch.css";
 
 const BookSearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -24,7 +26,7 @@ const BookSearch = () => {
       <h3>Borrowed books</h3>
       <ul>
         {borrowedBooks.map((book) => (
-        <li key={book.id}>{book.volumeInfo.title}</li>
+          <li key={book.id}>{book.volumeInfo.title}</li>
         ))}
       </ul>
 
@@ -39,19 +41,20 @@ const BookSearch = () => {
       </form>
       {books.map((book) => (
         <div key={book.id} className="book-card">
-          <img
-            src={book.volumeInfo.imageLinks?.thumbnail}
-            alt={`${book.volumeInfo.title} cover`}
-          />
-          <h2>{book.volumeInfo.title}</h2>
+          {/* use link componment to the new page*/}
+          <Link to={`/books/${book.id}`} key={book.id} className="book-card">
+            <img
+              src={book.volumeInfo.imageLinks?.thumbnail}
+              alt={`${book.volumeInfo.title} cover`}
+            />
+            <h2>{book.volumeInfo.title}</h2>
+          </Link>
           <p>{book.volumeInfo.subtitle}</p>
           <p>{book.volumeInfo.authors?.join(", ")}</p>
           <p>Price: {book.saleInfo.listPrice?.amount}</p>
           <button onClick={() => handleBorrow(book)}>Borrow</button>
         </div>
       ))}
-
-
     </div>
   );
 };

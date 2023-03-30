@@ -7,12 +7,12 @@ const cors = require('cors')
 const app = express()
 const PORT = process.env.PORT || 8080
 
-mongoose.connect('mongodb+srv://4177:4177@4177library.gxpxb0d.mongodb.net/test',{
+mongoose.connect('mongodb+srv://4177:4177@4177library.gxpxb0d.mongodb.net/test', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
 
-mongoose.connection.on('connected',()=>{
+mongoose.connection.on('connected', () => {
     console.log('Mongoose is connected!');
 })
 
@@ -24,21 +24,30 @@ const BookSchema = new Schema({
     wordCount: Number,
     status: {
         type: String,
-        enum: ['available','unavailable']
+        enum: ['available', 'unavailable']
     }
-},{ versionKey: false })
+}, { versionKey: false })
 
-const Book = mongoose.model('Book',BookSchema) 
+const Book = mongoose.model('Book', BookSchema)
 
-const data = {
-    title: 'test',
-    author: 'yuchen',
-    genre: 'test',
-    wordCount: 12138,
-    status:'available'
-}
+const ReviewSchema = new Schema({
+    bookId: String,
+    name: String,
+    review: String
+}, { versionKey: false });
 
-const newBook = new Book(data)
+const Review = mongoose.model('Review', ReviewSchema);
+
+
+// const data = {
+//     title: 'test',
+//     author: 'yuchen',
+//     genre: 'test',
+//     wordCount: 12138,
+//     status:'available'
+// }
+
+// const newBook = new Book(data)
 
 // newBook.save()
 //   .then(savedBook => {
@@ -49,26 +58,43 @@ const newBook = new Book(data)
 //   });
 app.use(cors())
 app.use(morgan('tiny'))
+app.use(express.json());
 
-app.get('/api',(req,res)=>{
+app.get('/api/reviews', (req, res) => {
+    Review.find({})
+        .then(data => res.json(data))
+        .catch(error => console.log(error))
+});
 
-    Book.find({ })
-        .then((data)=>{
-            console.log('Data: ',data)
-            res.json(data)
+app.get('/api/reviews/:id', (req, res) => {
+    const { id } = req.params;
+
+    Review.find({ bookId: id })
+        .then((data) => {
+            console.log('Data: ', data);
+            res.json(data);
         })
-        .catch((error)=>{
-            console.log('error', error)
-        })
+        .catch((error) => {
+            console.log('Error: ', error);
+            res.status(500).json({ error });
+        });
+});
+
+app.post('/api/reviews/add', async (req, res) => {
+    const { bookId, name, review } = req.body;
+  
+    const newReview = new Review({ bookId, name, review });
     
-})
-
-app.get('/api/name',(req,res)=>{
-    const data = {
-        username: 'peterson',
-        age: 5
+    try {
+      await newReview.save();
+      res.json({ message: 'Review added successfully' });
+    } catch (error) {
+      console.log('Error:', error);
+      res.status(400).json({ error });
     }
-    res.json(data)
-})
+  });
 
-app.listen(PORT,console.log(`server is starting at ${PORT}`))
+
+
+
+app.listen(PORT, console.log(`server is starting at ${PORT}`))

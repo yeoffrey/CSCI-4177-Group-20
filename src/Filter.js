@@ -175,20 +175,6 @@ export default function Filter() {
                 </div>
                 <div className="list">
                 </div>
-                <div>
-                    <h1>Books</h1>
-                    <ul>
-                        {books.map(book => (
-                            <li key={book._id}>
-                                <h2>{book.title}</h2>
-                                <p>Author: {book.author}</p>
-                                <p>Genre: {book.genre}</p>
-                                <p>Word count: {book.wordCount}</p>
-                                <p>Status: {book.status}</p>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
             </main>
             <BookSearch />
         </React.Fragment>
