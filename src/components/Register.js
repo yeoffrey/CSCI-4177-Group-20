@@ -10,14 +10,36 @@ import { registSchema } from '../schemas/schemas';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
+import {create} from "./auth";
+
+
 
 const Register = () => {
     const navigate = useNavigate();
 
-    const onSubmit = async (actions) => {
+    const user = {
+        "email": "example@gmail.com",
+        "password": "mysecretpassword",
+        "email_verified": false
+    };
+
+
+    const onSubmit = async (values, actions) => {
+        user.email = values.email;
+        user.password = values.password;
+        user.email_verified = false;
         await new Promise((resolve) => setTimeout(resolve, 2000));
-        navigate(`/index`);
-        actions.resetForm();
+        create(user,(err, result) => {
+            actions.resetForm();
+            if (err) {
+                console.error(err);
+                return;
+            }
+
+            console.log('Successfully Registered!', result);
+            navigate('/index');
+        });
+
     }
 
     // formik properties

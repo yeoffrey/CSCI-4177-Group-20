@@ -11,7 +11,7 @@ const WrongUsernameOrPasswordError = (email) => {
 }
 export function login(email, password, callback) {
   const bcrypt = require('bcrypt');
-  const MongoClient = require('mongodb@3.1.4').MongoClient;
+  const MongoClient = require('mongodb').MongoClient;
   const client = new MongoClient('mongodb+srv://4177:4177@4177library.gxpxb0d.mongodb.net/test');
 
   client.connect(function (err) {
@@ -40,8 +40,6 @@ export function login(email, password, callback) {
     });
   });
 }
-
-
 export function create(user, callback) {
   const bcrypt = require('bcrypt');
   const MongoClient = require('mongodb@3.1.4').MongoClient;

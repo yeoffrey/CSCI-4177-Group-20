@@ -10,6 +10,7 @@ import { loginSchema } from '../schemas/schemas.js';
 import { useFormik } from 'formik';
 import { FormLabel } from 'react-bootstrap';
 import "../css/credentials.css";
+import {login} from "./auth";
 
 // login form component
 export default function Login() {
@@ -17,8 +18,17 @@ export default function Login() {
     // submit reset password, go back to login
     const onSubmit = async (values, actions) => {
         await new Promise((resolve) => setTimeout(resolve, 500));
-        navigate(`/index`);
-        actions.resetForm();
+        login(values.username, values.password,(err, result) => {
+            actions.resetForm();
+            if (err) {
+                console.error(err);
+                return;
+            }
+
+            console.log('Successfully logged in!', result);
+            navigate('/index');
+        });
+
     };
 
     // formik properties
