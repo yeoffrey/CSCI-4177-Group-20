@@ -1,9 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
+import './bookSearch.css';
 
 const BookSearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [books, setBooks] = useState([]);
+  const [borrowedBooks, setBorrowedBooks] = useState([]);
   const [apiKey, setApiKey] = useState("AIzaSyDayUQL9JZHgC_Yk5rQFtFgfK59208X2JY")
 
   const HandleSearch = async (e) => {
@@ -13,8 +15,19 @@ const BookSearch = () => {
     setBooks(response.data.items);
   };
 
+  const handleBorrow = (book) => {
+    setBorrowedBooks([...borrowedBooks, book]);
+  };
+
   return (
     <div>
+      <h3>Borrowed books</h3>
+      <ul>
+        {borrowedBooks.map((book) => (
+        <li key={book.id}>{book.volumeInfo.title}</li>
+        ))}
+      </ul>
+
       <form onSubmit={HandleSearch} style={{textAlign: "center"}}>
         <input
           type="text"
@@ -25,7 +38,7 @@ const BookSearch = () => {
         <button type="submit">Search</button>
       </form>
       {books.map((book) => (
-        <div key={book.id}>
+        <div key={book.id} className="book-card">
           <img
             src={book.volumeInfo.imageLinks?.thumbnail}
             alt={`${book.volumeInfo.title} cover`}
@@ -34,8 +47,11 @@ const BookSearch = () => {
           <p>{book.volumeInfo.subtitle}</p>
           <p>{book.volumeInfo.authors?.join(", ")}</p>
           <p>Price: {book.saleInfo.listPrice?.amount}</p>
+          <button onClick={() => handleBorrow(book)}>Borrow</button>
         </div>
       ))}
+
+
     </div>
   );
 };
