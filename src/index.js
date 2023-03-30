@@ -19,6 +19,8 @@ import Message from './components/credentials_recover/Message';
 import Reset from './components/credentials_recover/Reset';
 import Register from './components/Register';
 import Resetsuccess from './components/credentials_recover/Resetsuccess';
+import Profile from './components/Profile';
+import AddReview from './components/addReview';
 
 ReactDOM.render(
     <Router>
@@ -35,6 +37,8 @@ ReactDOM.render(
             <Route path="/reset-success" element={<Resetsuccess />} />
             <Route path="/message" element={<Message />} />
             <Route path="/register" element={<Register />}></Route>
+            <Route path="/profile" element={<Profile />}></Route>
+            <Route path="/addReview" element={<AddReview />}></Route>
 
         </Routes>
     </Router>,
