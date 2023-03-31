@@ -21,7 +21,7 @@ import Message from './components/credentials_recover/Message';
 import Reset from './components/credentials_recover/Reset';
 import Register from './components/Register';
 import Resetsuccess from './components/credentials_recover/Resetsuccess';
-import BookDetails from "./bookDetails";
+import BookDetails from "./BookDetails";
 
 ReactDOM.render(
     <Router>
