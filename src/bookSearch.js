@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import axios from "axios";
 //adding link component
 import { Link } from "react-router-dom";
@@ -9,6 +9,12 @@ const BookSearch = () => {
   const [books, setBooks] = useState([]);
   const [borrowedBooks, setBorrowedBooks] = useState([]);
   const [apiKey, setApiKey] = useState("AIzaSyDayUQL9JZHgC_Yk5rQFtFgfK59208X2JY")
+
+  //Display books in 40 in a page(Yuchen)
+  useEffect(() => {
+    const url = `https://www.googleapis.com/books/v1/volumes?q=javascript&maxResults=40`;
+    axios.get(url).then((response) => setBooks(response.data.items));
+  }, []);
 
   const HandleSearch = async (e) => {
     e.preventDefault();
@@ -30,7 +36,7 @@ const BookSearch = () => {
         ))}
       </ul>
 
-      <form onSubmit={HandleSearch} style={{textAlign: "center"}}>
+      <form onSubmit={HandleSearch} style={{ textAlign: "center" }}>
         <input
           type="text"
           value={searchQuery}
@@ -41,7 +47,6 @@ const BookSearch = () => {
       </form>
       {books.map((book) => (
         <div key={book.id} className="book-card">
-          {/* use link componment to the new page*/}
           <Link to={`/books/${book.id}`} key={book.id} className="book-card">
             <img
               src={book.volumeInfo.imageLinks?.thumbnail}
