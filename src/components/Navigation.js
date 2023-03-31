@@ -27,18 +27,18 @@ function Navigation() {
                                         Home
                                     </NavLink>
                                 </Nav.Item>
-                                <NavDropdown title="Profile" id="nav-dropdown" menuVariant="dark"
+                                <NavDropdown title="Account" id="nav-dropdown" menuVariant="dark"
                                              show={show}
                                              onMouseEnter={showDropdown}
                                              onMouseLeave={hideDropdown}>
                                     <NavDropdown.Item>
-                                        <NavLink className="nav-link" to="/historyNone">
-                                            History (None)
+                                        <NavLink className="nav-link" to="/profile">
+                                            Profile
                                         </NavLink>
                                     </NavDropdown.Item>
                                     <NavDropdown.Item>
                                         <NavLink className="nav-link" to="/history">
-                                            History (book added)
+                                            History & Stats
                                         </NavLink>
                                     </NavDropdown.Item>
                                     <NavDropdown.Item>
