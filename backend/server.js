@@ -110,6 +110,9 @@ app.post('/api/reviews/add', async (req, res) => {
     }
   });
 
+  if(process.env.NODE_ENV==='production'){
+    app.use(express.static('../build'))
+  }
 
 
 //listen the app
