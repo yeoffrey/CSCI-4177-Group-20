@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
+import "./css/index.css";
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -19,7 +19,7 @@ import Message from './components/credentials_recover/Message';
 import Reset from './components/credentials_recover/Reset';
 import Register from './components/Register';
 import Resetsuccess from './components/credentials_recover/Resetsuccess';
-import BookDetails from "./BookDetails";
+import BookDetails from "./bookDetails";
 
 ReactDOM.render(
     <Router>

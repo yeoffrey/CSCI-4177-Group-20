@@ -1,3 +1,10 @@
+/** 
+ * @Author: Yuchen Ye
+ * Source URL: https://www.youtube.com/watch?v=OuCrHynro0w
+ * The detail of using this source please go to the README file
+ **/
+
+//decleared the dependency which is needed for connecting MongoDB
 const express = require('express')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
@@ -5,18 +12,23 @@ const path = require('path')
 const cors = require('cors')
 
 const app = express()
+//Use the port number 8080
 const PORT = process.env.PORT || 8080
 
+//Connecting the MongoDB by using the URL
 mongoose.connect('mongodb+srv://4177:4177@4177library.gxpxb0d.mongodb.net/test', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
 
+//If it is connected, output the message
 mongoose.connection.on('connected', () => {
     console.log('Mongoose is connected!');
 })
 
+//Create the Schema
 const Schema = mongoose.Schema;
+
 const BookSchema = new Schema({
     title: String,
     author: String,
@@ -27,15 +39,14 @@ const BookSchema = new Schema({
         enum: ['available', 'unavailable']
     }
 }, { versionKey: false })
-
-const Book = mongoose.model('Book', BookSchema)
-
 const ReviewSchema = new Schema({
     bookId: String,
     name: String,
     review: String
 }, { versionKey: false });
 
+//Create the model
+const Book = mongoose.model('Book', BookSchema)
 const Review = mongoose.model('Review', ReviewSchema);
 
 
@@ -56,10 +67,14 @@ const Review = mongoose.model('Review', ReviewSchema);
 //   .catch(err => {
 //     console.error(err);
 //   });
+
+//Use the dependency
 app.use(cors())
 app.use(morgan('tiny'))
 app.use(express.json());
 
+
+//Here is the routes part, get method to display the data
 app.get('/api/reviews', (req, res) => {
     Review.find({})
         .then(data => res.json(data))
@@ -80,6 +95,7 @@ app.get('/api/reviews/:id', (req, res) => {
         });
 });
 
+//Post method to upload the data
 app.post('/api/reviews/add', async (req, res) => {
     const { bookId, name, review } = req.body;
   
@@ -96,5 +112,5 @@ app.post('/api/reviews/add', async (req, res) => {
 
 
 
-
+//listen the app
 app.listen(PORT, console.log(`server is starting at ${PORT}`))
