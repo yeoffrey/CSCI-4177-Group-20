@@ -37,6 +37,8 @@ ReactDOM.render(
             <Route path="/reset-success" element={<Resetsuccess />} />
             <Route path="/message" element={<Message />} />
             <Route path="/register" element={<Register />}></Route>
+            <Route path="/profile" element={<Profile />}></Route>
+            <Route path="/addReview" element={<AddReview />}></Route>
 
         </Routes>
     </Router>,
