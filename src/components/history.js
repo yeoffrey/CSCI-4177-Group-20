@@ -1,10 +1,11 @@
-import React from "react";
-import {Link} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link, useParams} from "react-router-dom";
 import bookImg from '../images/book.svg';
 import page from '../images/file-earmark-break.svg';
 import clock from '../images/clock.svg';
 
 function History() {
+    /*TESTING WITH HARDCODED BOOKS
     const bookHistory =
         [{"title": "The Google Story",
             "pageCount": 326,
@@ -18,14 +19,94 @@ function History() {
             "averageRating": "N/A",
             "previewLink": "https://play.google.com/store/books/details?id=_ojXNuzgHRcC&source=gbs_api",
             "thumbnail": "http://books.google.com/books/content?id=_ojXNuzgHRcC&printsec=frontcover&img=1&zoom=1&edge=curl&imgtk=AFLRE72XJQIKbEALD3DBXtK3HapO7uy_y6eRodbY6nmDaImoDNgFYvyzGE-mt3VxK8NLhp1YN-par32T-crvbif4oNj6IjvY5oPZRVshURUb7sxBzUwc32JET-WKFoXGy1mO4XuTq5vO&source=gbs_api"
-        }]
-    let booksRead = [];
-    let totalBooks = 0;
+        }]*/
+    const id = ("test@test.ca");
+    let hasData = false;
     let totalPages = 0;
     let timeSpent = 0;
-    let idx= 0;
-    if (bookHistory.length == 0) {
-        return (
+    const [history, setHistory] = useState([]);
+    useEffect(() => {
+        // Fetch bookHistory
+        fetch(`http://localhost:8080/api/bookHistory/${id}`)
+            .then((response) => response.json())
+            .then((data) => setHistory(data))
+            .catch((error) => console.log(error));
+    }, [id]);
+
+    history.map(bookHist => {
+        bookHist.bookHistory.map(book => {
+            totalPages += book.pageCount
+            timeSpent = Math.round((totalPages * 2) / 60)
+            if (bookHist.bookHistory.length > 0){hasData = true}
+        });
+    })
+
+    return (
+        <div>{hasData ? (
+            <div>{history.map((bookHist) => (
+                <div className="App">
+                    <div id="Content-Header" className="container p-2 my-1 text-white bg-secondary">
+                        <div className="row">
+                            <div className="col">
+                                <img src={require('../images/pfp.jpg')} className="img-fluid" alt=""/>
+                            </div>
+                            <div className="col-9">
+                                <h1>$(USERNAME)'s Statistics</h1>
+                                <div className="container p-2 my-1 text-white">
+                                    <div className="row">
+                                        <div className="col">
+                                            <h1><img src={bookImg} className="img-fluid" alt=""/></h1>
+                                            <h2>{bookHist.bookHistory.length} Books read</h2>
+                                        </div>
+                                        <div className="col">
+                                            <h1><img src={page} className="img-fluid" alt=""/></h1>
+                                            <h2>{totalPages} Pages read</h2>
+                                        </div>
+                                        <div className="col">
+                                            <img src={clock} className="img-fluid" alt=""/>
+                                            <h2>Approx. {timeSpent} Hours spent reading</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="Content-Main" className="container bg-secondary">
+                        <div className="d-flex justify-content-between">
+                            <h1>Previous Reads:</h1>
+                            <Link type="button" className="btn btn-info" to='/addbook'><h1>+</h1></Link>
+                        </div>
+                        <div id="History" className="row p-5 text-center ">
+                            {bookHist.bookHistory.map(book => (
+                                <div className="card">
+                                    <div className="card-body">
+                                        <div className="row">
+                                            <div className="col">
+                                                <img src={book.thumbnail} className="img-thumbnail img-fluid"
+                                                     alt={book.title}/>
+                                            </div>
+                                            <div className="col-10 text-start">
+                                                <h5 className="book-title" key={book._id + "title"}>{book.title}</h5>
+                                                <h5 className="book-rating" key={book._id + "avgRating"}>Average
+                                                    Rating: {book.averageRating}</h5>
+                                                <h5 className="book-pages"
+                                                    key={book._id + "pageCount"}>Pages: {book.pageCount}</h5>
+                                                <p className="book-desc"
+                                                   key={book._id + "desc"}>{dataTrim(book.description)}</p>
+                                                {/* Link to book page does not work, unsure why
+                                    <form action={book.previewLink}>
+                                        <input className="btn btn-primary" type="submit" value="Go to book page"/>
+                                    </form>*/}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>))}
+            </div>
+        ) : (
             <div className="App">
                 <div id="Content-Header" className="container p-2 my-1 text-white bg-secondary">
                     <div className="row">
@@ -65,81 +146,14 @@ function History() {
                     </div>
                 </div>
             </div>
-        );
-    }
-    else {
-        for (let i=0;i<bookHistory.length;i++){
-            totalPages += bookHistory[i].pageCount;
-            timeSpent = Math.round((totalPages * 2) / 60)
-        }
-        return (
-            <div className="App">
-                <div id="Content-Header" className="container p-2 my-1 text-white bg-secondary">
-                    <div className="row">
-                        <div className="col">
-                            <img src={require('../images/pfp.jpg')} className="img-fluid" alt=""/>
-                        </div>
-                        <div className="col-9">
-                            <h1>$(USERNAME)'s Statistics</h1>
-                            <div className="container p-2 my-1 text-white">
-                                <div className="row">
-                                    <div className="col">
-                                        <h1><img src={bookImg} className="img-fluid" alt=""/></h1>
-                                        <h2>{bookHistory.length} Books read</h2>
-                                    </div>
-                                    <div className="col">
-                                        <h1><img src={page} className="img-fluid" alt=""/></h1>
-                                        <h2>{totalPages} Pages read</h2>
-                                    </div>
-                                    <div className="col">
-                                        <img src={clock} className="img-fluid" alt=""/>
-                                        <h2>Approx. {timeSpent} Hours spent reading</h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="Content-Main" className="container bg-secondary">
-                    <div className="d-flex justify-content-between">
-                        <h1>Previous Reads:</h1>
-                        <Link type="button" className="btn btn-info" to='/addbook'><h1>+</h1></Link>
-                    </div>
-                    <div id="History" className="row p-5 text-center ">
-                        {bookHistory.map((book) => (
-                            <div className="card">
-                                <div className="card-body">
-                                    <div className="row">
-                                        <div className="col">
-                                            <img src={book.thumbnail} className="img-thumbnail img-fluid" alt={book.title}/>
-                                        </div>
-                                        <div className="col-10 text-start">
-                                            <h5 className="book-title" key={book.id + "title"}>{book.title}</h5>
-                                            <h5 className="book-rating" key={book.id + "avgRating"}>Average Rating: {book.averageRating}</h5>
-                                            <h5 className="book-pages" key={book.id + "pageCount"}>Pages: {book.pageCount}</h5>
-                                            <p className="book-desc" key={book.id + "desc"}>{dataTrim(book.description)}</p>
-                                            {/* Link to book page does not work, unsure why
-                                            <form action={book.previewLink}>
-                                                <input className="btn btn-primary" type="submit" value="Go to book page"/>
-                                            </form>*/}
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>)
-                        )}
-                    </div>
-                </div>
-            </div>
-        );
-
-    }
+        )}
+        </div>
+    )
 }
-
 function dataTrim(desc)
 {   let text = desc;
-    if (desc.length > 410) {
-        text = desc.substring(0,(410))+"...";
+    if (desc.length > 500) {
+        text = desc.substring(0,(500))+"...";
     }
     return text;
 }
