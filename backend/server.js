@@ -45,7 +45,8 @@ const bookHistorySchema = new Schema({
     description: String,
     averageRating: Number,
     thumbnail: String,
-    previewLink: String
+    previewLink: String,
+    bookID: String
 }, { versionKey: false })
 
 const UserHistorySchema = new Schema({
