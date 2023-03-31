@@ -13,6 +13,8 @@ import {
 import BookSearch from "./bookSearch";
 import Filter from "./Filter";
 import Login from './components/Login';
+import Profile from './components/Profile';
+import AddReview from './components/addReview';
 import { Recover } from './components/credentials_recover/Recover';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Message from './components/credentials_recover/Message';
@@ -37,6 +39,8 @@ ReactDOM.render(
             <Route path="/reset-success" element={<Resetsuccess />} />
             <Route path="/message" element={<Message />} />
             <Route path="/register" element={<Register />}></Route>
+            <Route path="/profile" element={<Profile />}></Route>
+            <Route path="/addReview" element={<AddReview />}></Route>
 
         </Routes>
     </Router>,
