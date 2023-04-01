@@ -156,12 +156,12 @@ export default googleBooksSearch
 - <!---How---> [webninjadeveloper](https://webninjadeveloper.com/react/build-a-react-book-search-app-using-google-books-api-v3-in-browser-using-typescript/)'s Code was modified by Kaushik Dhamodaran
 
 
-##Individual Work
+## Individual Work
 * Bryce Wiedemann - B00828649 - br664676@dal.ca
-* User History and Stats Feature
+  *  User History and Stats Feature
 I worked on created the user history and stats. This feature entails the user clicking on the history and stats section of the navbar (My Account > History & Stats). This feature allows for a user to press the borrow button on the main page (homepage) and the book that borrow was pressed on will automatically be added to the database as a book that the user has read/is reading. the information that is added to the database and then pulled and displayed for the user to see the stats like books read in all, how many total pages, and approximately how many hours have been/would have been read (if the books were read). This is based on the average rate that i found people read at which is 1/2 page per minute. 
 ** Files edited for to create this feature
-- history.js
+  - history.js
   * this is the main file that i was using the create this feature. this shows the css and main calcultations for the stats. On top of this it shows the books read in seperate cards that can be expanded (click the more info button) that will bring you to the reviews page done by another group memeber.
   - Navigation.js
   * this file was used to create the navbar that was a secondary goal for me, creating the dropdown that will house the profile, history and stats, aswell as aynthing else that is deemed needed when the demo time comes.
