@@ -167,3 +167,18 @@ I worked on created the user history and stats. This feature entails the user cl
   * this file was used to create the navbar that was a secondary goal for me, creating the dropdown that will house the profile, history and stats, aswell as aynthing else that is deemed needed when the demo time comes.
   - backend/server.js
   * This file i added the backend schema for saving the information to the database and allowing for data to be added (books to be borrowed) and retrieved using the proper schema. This makes sure that all information that is requied is present.
+
+
+
+* Yuchen Ye - B00883812 -yc786880@dal.ca
+  * File I created
+  1. server.js
+  2. BookDetails.js (and css)
+  3. Backend folder
+  4. Filter.js (and css)
+  * Feature I made
+In this group project, I implemented MongoDB link (server.js) and each book review (BookDetails.js).
+
+In the previous proposal and assignment. I am mainly responsible for the implementation of filter function and review function. But later in the programming, my team used the    Google api to replace the database as the book display function. Since I am not familiar with the Google api usage, I cannot complete the filter function. Therefore, I fully implemented the review function. As the user clicks through each book, BookDetails puts the author and biography of each book on top. And add a form below that allows users to enter their name and comments. When the form is submitted, user comments are uploaded to the database and displayed below. You can search for one in the search bar and click on the first book to see reviews.
+
+Another feature I've done is connect to mongoDB. I used some dependencies to connect (e.g. mongoose,express) and then created the schema and model for Review below. Use the get method and post method in YouTube 5. If you want to check your database connection, you can view my review collection by typing "local host:8080/api/review" into the URL bar
