@@ -182,3 +182,18 @@ In this group project, I implemented MongoDB link (server.js) and each book revi
 In the previous proposal and assignment. I am mainly responsible for the implementation of filter function and review function. But later in the programming, my team used the    Google api to replace the database as the book display function. Since I am not familiar with the Google api usage, I cannot complete the filter function. Therefore, I fully implemented the review function. As the user clicks through each book, BookDetails puts the author and biography of each book on top. And add a form below that allows users to enter their name and comments. When the form is submitted, user comments are uploaded to the database and displayed below. You can search for one in the search bar and click on the first book to see reviews.
 
 Another feature I've done is connect to mongoDB. I used some dependencies to connect (e.g. mongoose,express) and then created the schema and model for Review below. Use the get method and post method in YouTube 5. If you want to check your database connection, you can view my review collection by typing "local host:8080/api/review" into the URL bar
+
+* Yuxuan(Hardison) Wang - B00880845 - yx703587@dal.ca
+  * File I created
+  1. Message.js
+  2. Recover.js
+  3. Reset.js
+  4. Resetsuccess.js
+  5. auth.js
+  6. Login.js
+  7. Register.js
+  8. schemas.js
+  9. CSS files of all above.
+
+> In this group project, I implemented registeration, login, credentials recover/reset and user authentication. 
+> In the previous assignments and proposal, I was always doing the authentication and authorization features. But in previous works, I use self-implemented API for retrieving contents from server. In this assignment, I tried to use auth0 to implement better authentication. However, all the funstions are tested working on the auth0 testbed (data can actually go into our database and retrieved), but not functioning while hook up the api to pages in our project due to dependencies issues. The features will be refined and connected to each page later in the project.
