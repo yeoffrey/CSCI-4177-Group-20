@@ -15,76 +15,24 @@
 * [Kaushik Dhamodaran](ks695041@dal.ca) - *(Maintainer)*
 * [Bryce Wiedemann](br664676@dal.ca) - *(Maintainer)*
 * [Geoffrey Belcher](Gbelcher@dal.ca) - *(Maintainer)*
+    * Handled Profile page and adding a review modal (profile.js and addReview.js)
 * [Yuchen Ye](Yc786880@dal.ca) - *(Maintainer)*
 * [Yuxuan Wang](yx703587@dal.ca) - *(Maintainer)*
 
 
 ## Getting Started
 
-**[Optional]** If needing to provide the marker with a copy of the project that should run on their local machine for development, testing and/or marking purposes. Please include the following sections.
-
-See deployment for notes on how to deploy the project on a live system.
-
-### Prerequisites
-
-To have a local copy of this lab / assingnment / project up and running on your local machine, you will first need to install the following software / libraries / plug-ins
-
-```
-Give examples or provide a list of the required software / libraries / plug-ins
-
-```
-
-See the following section for detailed step-by-step instructions on how to install this software / libraries / plug-ins
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be, assume the marker just acquired a computer
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo. You may also include a quick example of what the marker should see if the installation of all required software / libraries / plug-ins was successful.
-
-
-## Running the tests
-
-If needing to run automated tests, then explain how to run the automated tests for this system. If this section is not needed, ** you may delete **.
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+Find our deployment here -> https://four177-group-20-project.onrender.com/
+Find our repository here -> https://git.cs.dal.ca/dhamodaran/4177-group-project 
 
 ## Built With
 
 <!--- Provide a list of the frameworks used to build this application, your list should include the name of the framework used, the url where the framework is available for download and what the framework was used for, see the example below --->
 
-* [Google Books API](https://developers.google.com/books) - API used to collect book information
+* [Google Books API](https://developers.google.com/books) - API used to collect book information.
+* [MongoDB](https://www.mongodb.com/) - Back end framework with [Mongoose](https://mongoosejs.com/).
+* [React](https://react.dev/) - Front end framework of choice.
+* [Render.com](render.com) - Deployment.
 **
 
 ## Sources Used
@@ -205,33 +153,3 @@ export default googleBooksSearch
 - <!---How---> The code in [webninjadeveloper](https://webninjadeveloper.com/react/build-a-react-book-search-app-using-google-books-api-v3-in-browser-using-typescript/) was implemented by Kaushik Dhamodaran
 - <!---Why---> [webninjadeveloper](https://webninjadeveloper.com/react/build-a-react-book-search-app-using-google-books-api-v3-in-browser-using-typescript/)'s Code was used because it shows how to use google books api to search and display books
 - <!---How---> [webninjadeveloper](https://webninjadeveloper.com/react/build-a-react-book-search-app-using-google-books-api-v3-in-browser-using-typescript/)'s Code was modified by Kaushik Dhamodaran
-
-*Repeat as needed*
-
-### File Name
-
-*Lines ## - ##*
-
-```
-Copy and paste your code on lines mentioned 
-
-```
-
-The code above was created by adapting the code in [NAME](link) as shown below: 
-
-```
-Copy and paste the snippet of code you are referencing
-
-```
-
-- <!---How---> The code in [NAME](link) was implemented by...
-- <!---Why---> [NAME](link)'s Code was used because...
-- <!---How---> [NAME](link)'s Code was modified by...
-
-*Repeat as needed*
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
