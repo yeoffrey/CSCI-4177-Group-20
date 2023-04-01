@@ -168,7 +168,14 @@ I worked on created the user history and stats. This feature entails the user cl
   - backend/server.js
   * This file i added the backend schema for saving the information to the database and allowing for data to be added (books to be borrowed) and retrieved using the proper schema. This makes sure that all information that is requied is present.
 
-
+* Geoffrey Belcher - B00798482 - gbelcher@dal.ca
+  * Files I created or modified.
+  1. server.js, added user api capabilities.
+  2. Profile.js
+  3. AddReview.js
+  * Feature
+  For this project, I am implementing a feature that allows the user to view a Profile page and add a review to a book. I originally wanted the feature to show recommendations for them, however I don't know how to make an algorithm to do that and also I think its a big beyond the scope of the project. I want the profile page to show stats about the user, show what reviews the user has on their profile page, and add a review.
+  For this assignment, I've added the API functionality in `server.js` to add a user to the DB and to fetch user data by a specific email. As well, I've added a `Profile.js` file which renders the profile page, as well as a `addreview.js` file which allows the user to add a review which shows up on their page.
 
 * Yuchen Ye - B00883812 -yc786880@dal.ca
   * File I created
