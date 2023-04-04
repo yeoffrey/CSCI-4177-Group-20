@@ -1,10 +1,20 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import axios from "axios";
+//adding link component
+import { Link } from "react-router-dom";
+import "./css/bookSearch.css";
 
 const BookSearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [books, setBooks] = useState([]);
+  const [borrowedBooks, setBorrowedBooks] = useState([]);
   const [apiKey, setApiKey] = useState("AIzaSyDayUQL9JZHgC_Yk5rQFtFgfK59208X2JY")
+
+  //Display books in 40 in a page(Yuchen)
+  useEffect(() => {
+    const url = `https://www.googleapis.com/books/v1/volumes?q=javascript&maxResults=40`;
+    axios.get(url).then((response) => setBooks(response.data.items));
+  }, []);
 
   const HandleSearch = async (e) => {
     e.preventDefault();
@@ -13,9 +23,20 @@ const BookSearch = () => {
     setBooks(response.data.items);
   };
 
+  const handleBorrow = (book) => {
+    setBorrowedBooks([...borrowedBooks, book]);
+  };
+
   return (
     <div>
-      <form onSubmit={HandleSearch} style={{textAlign: "center"}}>
+      <h3>Borrowed books</h3>
+      <ul>
+        {borrowedBooks.map((book) => (
+          <li key={book.id}>{book.volumeInfo.title}</li>
+        ))}
+      </ul>
+
+      <form onSubmit={HandleSearch} style={{ textAlign: "center" }}>
         <input
           type="text"
           value={searchQuery}
@@ -25,15 +46,18 @@ const BookSearch = () => {
         <button type="submit">Search</button>
       </form>
       {books.map((book) => (
-        <div key={book.id}>
-          <img
-            src={book.volumeInfo.imageLinks?.thumbnail}
-            alt={`${book.volumeInfo.title} cover`}
-          />
-          <h2>{book.volumeInfo.title}</h2>
+        <div key={book.id} className="book-card">
+          <Link to={`/books/${book.id}`} key={book.id} className="book-card">
+            <img
+              src={book.volumeInfo.imageLinks?.thumbnail}
+              alt={`${book.volumeInfo.title} cover`}
+            />
+            <h2>{book.volumeInfo.title}</h2>
+          </Link>
           <p>{book.volumeInfo.subtitle}</p>
           <p>{book.volumeInfo.authors?.join(", ")}</p>
           <p>Price: {book.saleInfo.listPrice?.amount}</p>
+          <button onClick={() => handleBorrow(book)}>Borrow</button>
         </div>
       ))}
     </div>

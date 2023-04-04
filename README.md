@@ -6,85 +6,34 @@
 **[Optional]** If what is being submitted is an individual Lab or Assignment. Otherwise, include a brief one paragraph description about the project.
 
 * *Date Created*: 27 JAN 2023
-* *Last Modification Date*: DD MMM YYYY
+* *Last Modification Date*: 31 MAR 2023
 * *Gitlab URL*: <https://git.cs.dal.ca/dhamodaran/4177-group-project>
-* *Netlify URL*: <https://4177group20prototype.netlify.app/>
-
+* *Host URL*: <https://four177-group-20-project.onrender.com/>
 ## Authors
 
 * [Kaushik Dhamodaran](ks695041@dal.ca) - *(Maintainer)*
 * [Bryce Wiedemann](br664676@dal.ca) - *(Maintainer)*
+    * Handled User stats and History (history.js)
 * [Geoffrey Belcher](Gbelcher@dal.ca) - *(Maintainer)*
+    * Handled Profile page and adding a review modal (profile.js and addReview.js)
 * [Yuchen Ye](Yc786880@dal.ca) - *(Maintainer)*
 * [Yuxuan Wang](yx703587@dal.ca) - *(Maintainer)*
 
 
 ## Getting Started
 
-**[Optional]** If needing to provide the marker with a copy of the project that should run on their local machine for development, testing and/or marking purposes. Please include the following sections.
-
-See deployment for notes on how to deploy the project on a live system.
-
-### Prerequisites
-
-To have a local copy of this lab / assingnment / project up and running on your local machine, you will first need to install the following software / libraries / plug-ins
-
-```
-Give examples or provide a list of the required software / libraries / plug-ins
-
-```
-
-See the following section for detailed step-by-step instructions on how to install this software / libraries / plug-ins
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be, assume the marker just acquired a computer
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo. You may also include a quick example of what the marker should see if the installation of all required software / libraries / plug-ins was successful.
-
-
-## Running the tests
-
-If needing to run automated tests, then explain how to run the automated tests for this system. If this section is not needed, ** you may delete **.
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+Find our deployment here -> https://four177-group-20-project.onrender.com/
+Find our repository here -> https://git.cs.dal.ca/dhamodaran/4177-group-project 
 
 ## Built With
 
 <!--- Provide a list of the frameworks used to build this application, your list should include the name of the framework used, the url where the framework is available for download and what the framework was used for, see the example below --->
 
-* [Google Books API](https://developers.google.com/books) - API used to collect book information
+* [Google Books API](https://developers.google.com/books) - API used to collect book information.
+* [MongoDB](https://www.mongodb.com/) - Back end framework with [Mongoose](https://mongoosejs.com/).
+* [React](https://react.dev/) - Front end framework of choice.
+* [Render.com](render.com) - Deployment.
+* [bootstrap](https://getbootstrap.com) - Styles for frontend framework
 **
 
 ## Sources Used
@@ -206,32 +155,54 @@ export default googleBooksSearch
 - <!---Why---> [webninjadeveloper](https://webninjadeveloper.com/react/build-a-react-book-search-app-using-google-books-api-v3-in-browser-using-typescript/)'s Code was used because it shows how to use google books api to search and display books
 - <!---How---> [webninjadeveloper](https://webninjadeveloper.com/react/build-a-react-book-search-app-using-google-books-api-v3-in-browser-using-typescript/)'s Code was modified by Kaushik Dhamodaran
 
-*Repeat as needed*
 
-### File Name
+## Individual Work
+* Bryce Wiedemann - B00828649 - br664676@dal.ca
+  *  User History and Stats Feature
+I worked on created the user history and stats. This feature entails the user clicking on the history and stats section of the navbar (My Account > History & Stats). This feature allows for a user to press the borrow button on the main page (homepage) and the book that borrow was pressed on will automatically be added to the database as a book that the user has read/is reading. the information that is added to the database and then pulled and displayed for the user to see the stats like books read in all, how many total pages, and approximately how many hours have been/would have been read (if the books were read). This is based on the average rate that i found people read at which is 1/2 page per minute. 
+** Files edited for to create this feature
+  - history.js
+  * this is the main file that i was using the create this feature. this shows the css and main calcultations for the stats. On top of this it shows the books read in seperate cards that can be expanded (click the more info button) that will bring you to the reviews page done by another group memeber.
+  - Navigation.js
+  * this file was used to create the navbar that was a secondary goal for me, creating the dropdown that will house the profile, history and stats, aswell as aynthing else that is deemed needed when the demo time comes.
+  - backend/server.js
+  * This file i added the backend schema for saving the information to the database and allowing for data to be added (books to be borrowed) and retrieved using the proper schema. This makes sure that all information that is requied is present.
 
-*Lines ## - ##*
+* Geoffrey Belcher - B00798482 - gbelcher@dal.ca
+  * Files I created or modified.
+  1. server.js, added user api capabilities.
+  2. Profile.js
+  3. AddReview.js
+  * Feature
+  For this project, I am implementing a feature that allows the user to view a Profile page and add a review to a book. I originally wanted the feature to show recommendations for them, however I don't know how to make an algorithm to do that and also I think its a big beyond the scope of the project. I want the profile page to show stats about the user, show what reviews the user has on their profile page, and add a review.
+  For this assignment, I've added the API functionality in `server.js` to add a user to the DB and to fetch user data by a specific email. As well, I've added a `Profile.js` file which renders the profile page, as well as a `addreview.js` file which allows the user to add a review which shows up on their page.
 
-```
-Copy and paste your code on lines mentioned 
+* Yuchen Ye - B00883812 -yc786880@dal.ca
+  * File I created
+  1. server.js
+  2. BookDetails.js (and css)
+  3. Backend folder
+  4. Filter.js (and css)
+  * Feature I made
+In this group project, I implemented MongoDB link (server.js) and each book review (BookDetails.js).
 
-```
+In the previous proposal and assignment. I am mainly responsible for the implementation of filter function and review function. But later in the programming, my team used the    Google api to replace the database as the book display function. Since I am not familiar with the Google api usage, I cannot complete the filter function. Therefore, I fully implemented the review function. As the user clicks through each book, BookDetails puts the author and biography of each book on top. And add a form below that allows users to enter their name and comments. When the form is submitted, user comments are uploaded to the database and displayed below. You can search for one in the search bar and click on the first book to see reviews.
 
-The code above was created by adapting the code in [NAME](link) as shown below: 
+Another feature I've done is connect to mongoDB. I used some dependencies to connect (e.g. mongoose,express) and then created the schema and model for Review below. Use the get method and post method in YouTube 5. If you want to check your database connection, you can view my review collection by typing "local host:8080/api/review" into the URL bar
 
-```
-Copy and paste the snippet of code you are referencing
+* Yuxuan(Hardison) Wang - B00880845 - yx703587@dal.ca
+  * File I created
+  1. Message.js
+  2. Recover.js
+  3. Reset.js
+  4. Resetsuccess.js
+  5. auth.js
+  6. Login.js
+  7. Register.js
+  8. schemas.js
+  9. CSS files of all above.
 
-```
+> In this group project, I implemented registeration, login, credentials recover/reset and user authentication. 
+> In the previous assignments and proposal, I was always doing the authentication and authorization features. But in previous works, I use self-implemented API for retrieving contents from server. In this assignment, I tried to use auth0 to implement better authentication. However, all the funstions are tested working on the auth0 testbed (data can actually go into our database and retrieved), but not functioning while hook up the api to pages in our project due to dependencies issues. The features will be refined and connected to each page later in the project.
 
-- <!---How---> The code in [NAME](link) was implemented by...
-- <!---Why---> [NAME](link)'s Code was used because...
-- <!---How---> [NAME](link)'s Code was modified by...
-
-*Repeat as needed*
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+> the testbed and authentication tempelate code from: https://manage.auth0.com/
