@@ -2,7 +2,7 @@ import { useState,useEffect } from "react";
 import axios from "axios";
 //adding link component
 import { Link } from "react-router-dom";
-import "./bookSearch.css";
+import "./css/bookSearch.css";
 
 const BookSearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
