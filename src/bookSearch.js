@@ -1,3 +1,4 @@
+//Author: Kaushik Dhamodaran
 import { useState,useEffect } from "react";
 import axios from "axios";
 //adding link component
@@ -5,17 +6,20 @@ import { Link } from "react-router-dom";
 import "./css/bookSearch.css";
 
 const BookSearch = () => {
+  //Defines constants 
   const [searchQuery, setSearchQuery] = useState("");
   const [books, setBooks] = useState([]);
   const [borrowedBooks, setBorrowedBooks] = useState([]);
+  //Google books API key
   const [apiKey, setApiKey] = useState("AIzaSyDayUQL9JZHgC_Yk5rQFtFgfK59208X2JY")
 
-  //Display books in 40 in a page(Yuchen)
+  //Gets data from google books
   useEffect(() => {
     const url = `https://www.googleapis.com/books/v1/volumes?q=javascript&maxResults=40`;
     axios.get(url).then((response) => setBooks(response.data.items));
   }, []);
 
+  //Handles search query by getting from API
   const HandleSearch = async (e) => {
     e.preventDefault();
     const url = `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}`;
@@ -23,6 +27,7 @@ const BookSearch = () => {
     setBooks(response.data.items);
   };
 
+  //Display books in 40 in a page(Yu/chen)
   const handleBorrow = (book) => {
     let averageRating;
     !book.volumeInfo.averageRating ? (averageRating = null) : (averageRating = book.volumeInfo.averageRating)
