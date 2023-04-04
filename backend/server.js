@@ -13,6 +13,11 @@ const cors = require('cors')
 const { boolean } = require("yup");
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
+import { createHash } from "crypto";
+const secretKey = "secretkey"; // better make it retrieved from db.
+
+
 
 const app = express()
 //Use the port number 8080
@@ -186,7 +191,7 @@ app.get('/api/bookHistory/:id', (req, res) => {
  * @author Yuxuan(Hardison) Wang
  */
 const UserSchema = new Schema({
-    id: {
+    _id: {
         type: Number,
         required: true,
         unique: true,
@@ -196,6 +201,10 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         unique: true
+    },
+    salt: {
+        type: String,
+        required: true,
     },
     password: {
         type: String,
@@ -213,33 +222,45 @@ const UserSchema = new Schema({
     bookHistory: [{ type: UserHistorySchema, ref: 'Book' }]
 });
 
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model('user', UserSchema);
+
 
 // Login
 app.post('/api/login', async (req, res) => {
-  const { email, password } = req.body;
+    const { email, password } = req.body;
 
-  try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      res.status(401).json({ error: 'Invalid email or password' });
-      return;
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            res.status(401).json({ error: 'Invalid email or password' });
+            return;
+        }
+
+        /**
+         * TODO: the salt should retrieve from the db
+         * then get the stored user.password, compare it with the hashedpassword
+         * computed below.
+         */
+        const salt = "";
+        const hashedPassword = createHash("sha512")
+            .update(password)
+            .update(createHash("sha512").update(salt, "base64").digest("base64"))
+            .digest("base64");
+
+        if (hashedPassword !== user.password) {
+            res.status(401).json({ error: 'Invalid email or password' });
+            return;
+        }
+
+        const token = jwt.sign({ userId: user._id }, secretKey);
+        res.json({ token });
+    } catch (error) {
+        console.log('Error:', error);
+        res.status(500).json({ error });
     }
-
-    const hashedPassword = hash(password, user.salt);
-
-    if (hashedPassword !== user.password) {
-      res.status(401).json({ error: 'Invalid email or password' });
-      return;
-    }
-
-    const token = generateToken(user._id);
-    res.json({ token });
-  } catch (error) {
-    console.log('Error:', error);
-    res.status(500).json({ error });
-  }
 });
+
+
 
 // Register
 app.post('/api/register', async (req, res) => {
@@ -252,11 +273,20 @@ app.post('/api/register', async (req, res) => {
       return;
     }
 
-    const { hashedPassword, salt } = hash(password);
+      /**
+       * salt is randomly generated string with 512 in length
+       * hashedPassword is the final password in db
+       * both salt and hashedPassword are stored in db
+       */
+    const salt = crypto.randomBytes(512).toString('base64');
+    const hashedPassword = createHash("sha512")
+          .update(password)
+          .update(createHash("sha512").update(salt, "base64").digest("base64"))
+          .digest("base64");
     const newUser = new User({ email, password: hashedPassword, salt });
     await newUser.save();
 
-    const token = generateToken(newUser._id);
+    const token = jwt.sign({ userId: newUser._id }, secretKey);
     res.json({ token });
   } catch (error) {
     console.log('Error:', error);
