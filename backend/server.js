@@ -10,7 +10,9 @@ const mongoose = require('mongoose')
 const morgan = require('morgan')
 const path = require('path')
 const cors = require('cors')
-const {boolean} = require("yup");
+const { boolean } = require("yup");
+const bodyParser = require('body-parser');
+const crypto = require('crypto');
 
 const app = express()
 //Use the port number 8080
@@ -65,7 +67,7 @@ const UserHistorySchema = new Schema({
         type: bookHistorySchema,
         required: false
     }]
-    }, { versionKey: false })
+}, { versionKey: false })
 
 const bookHistory = mongoose.model('bookHistory', UserHistorySchema);
 // const data = {
@@ -148,17 +150,17 @@ app.get('/api/reviews/:id', (req, res) => {
 //Post method to upload the data
 app.post('/api/reviews/add', async (req, res) => {
     const { bookId, name, review } = req.body;
-  
+
     const newReview = new Review({ bookId, name, review });
-    
+
     try {
-      await newReview.save();
-      res.json({ message: 'Review added successfully' });
+        await newReview.save();
+        res.json({ message: 'Review added successfully' });
     } catch (error) {
-      console.log('Error:', error);
-      res.status(400).json({ error });
+        console.log('Error:', error);
+        res.status(400).json({ error });
     }
-  });
+});
 
 app.get('/api/bookHistory', (req, res) => {
     bookHistory.find({})
@@ -177,6 +179,155 @@ app.get('/api/bookHistory/:id', (req, res) => {
             console.log('Error: ', error);
             res.status(500).json({ error });
         });
+});
+
+/**
+ * authentication stuff
+ * @author Yuxuan(Hardison) Wang
+ */
+const UserSchema = new Schema({
+    id: {
+        type: Number,
+        required: true,
+        unique: true,
+        autoIncrement: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    email_verified: {
+        type: Boolean,
+        default: false
+    },
+    permission: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user'
+    },
+    bookHistory: [{ type: UserHistorySchema, ref: 'Book' }]
+});
+
+const User = mongoose.model('User', UserSchema);
+
+// Login
+app.post('/api/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      res.status(401).json({ error: 'Invalid email or password' });
+      return;
+    }
+
+    const hashedPassword = hash(password, user.salt);
+
+    if (hashedPassword !== user.password) {
+      res.status(401).json({ error: 'Invalid email or password' });
+      return;
+    }
+
+    const token = generateToken(user._id);
+    res.json({ token });
+  } catch (error) {
+    console.log('Error:', error);
+    res.status(500).json({ error });
+  }
+});
+
+// Register
+app.post('/api/register', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      res.status(409).json({ error: 'User with that email already exists' });
+      return;
+    }
+
+    const { hashedPassword, salt } = hash(password);
+    const newUser = new User({ email, password: hashedPassword, salt });
+    await newUser.save();
+
+    const token = generateToken(newUser._id);
+    res.json({ token });
+  } catch (error) {
+    console.log('Error:', error);
+    res.status(500).json({ error });
+  }
+});
+
+// Get user data
+app.get('/api/user/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findById(id).select('-password -salt');
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.log('Error:', error);
+    res.status(500).json({ error });
+  }
+});
+
+// Delete user
+app.delete('/api/user/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findByIdAndDelete(id);
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.log('Error:', error);
+    res.status(500).json({ error });
+  }
+});
+
+// Update user password
+app.put('/api/user/:id/updatePassword', async (req, res) => {
+  const { id } = req.params;
+  const { oldPassword, newPassword } = req.body;
+
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    const hashedOldPassword = hash(oldPassword, user.salt);
+    if (hashedOldPassword !== user.password) {
+      res.status(401).json({ error: 'Invalid password' });
+      return;
+    }
+
+    const { hashedPassword, salt } = hash(newPassword);
+    user.password = hashedPassword;
+    user.salt = salt;
+    await user.save();
+
+    res.json({ message: 'Password updated successfully' });
+  } catch (error) {
+    console.log('Error:', error);
+    res.status(500).json({ error });
+  }
 });
 
 //listen the app

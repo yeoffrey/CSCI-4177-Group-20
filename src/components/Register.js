@@ -10,50 +10,39 @@ import { registSchema } from '../schemas/schemas';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
-import {create} from "./auth";
-
+import axios from 'axios';
 
 
 const Register = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const user = {
-        "email": "example@gmail.com",
-        "password": "mysecretpassword",
-        "email_verified": false
-    };
-
-
-    const onSubmit = async (values, actions) => {
-        user.email = values.email;
-        user.password = values.password;
-        user.email_verified = false;
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        create(user,(err, result) => {
-            actions.resetForm();
-            if (err) {
-                console.error(err);
-                return;
-            }
-
-            console.log('Successfully Registered!', result);
-            navigate('/index');
-        });
-
+  const onSubmit = async (values, actions) => {
+    try {
+      const response = await axios.post('/api/register', {
+        email: values.email,
+        password: values.password
+      });
+      
+      console.log('Successfully Registered!', response.data);
+      navigate('/index');
+    } catch (error) {
+      console.error(error);
     }
+    actions.resetForm();
+  }
 
-    // formik properties
-    const { values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit } = useFormik({
-        initialValues: {
-            firstname: "",
-            lastname: "",
-            email: "",
-            password: "",
-            confirm_password: "",
-        },
-        validationSchema: registSchema,
-        onSubmit,
-    });
+  // formik properties
+  const { values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit } = useFormik({
+    initialValues: {
+      firstname: "",
+      lastname: "",
+      email: "",
+      password: "",
+      confirm_password: "",
+    },
+    validationSchema: registSchema,
+    onSubmit,
+  });
 
 
     // registration form

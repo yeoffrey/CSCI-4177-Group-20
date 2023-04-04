@@ -9,26 +9,28 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginSchema } from '../schemas/schemas.js';
 import { useFormik } from 'formik';
 import { FormLabel } from 'react-bootstrap';
+import axios from "axios";
 import "../css/credentials.css";
-import {login} from "./auth";
+
 
 // login form component
 export default function Login() {
     const navigate = useNavigate();
     // submit reset password, go back to login
     const onSubmit = async (values, actions) => {
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        login(values.username, values.password,(err, result) => {
-            actions.resetForm();
-            if (err) {
-                console.error(err);
-                return;
-            }
+        try {
+            const response = await axios.post('/api/login', {
+              email: values.username,
+              password: values.password,
+            });
 
-            console.log('Successfully logged in!', result);
-            navigate('/index');
-        });
+            localStorage.setItem('token', response.data.token);
 
+            navigate('/');
+        } catch (error) {
+            actions.setSubmitting(false);
+            actions.setErrors({ username: 'Invalid email or password', password: 'Invalid email or password' });
+        }
     };
 
     // formik properties
@@ -40,6 +42,8 @@ export default function Login() {
         validationSchema: loginSchema,
         onSubmit,
     });
+
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
 
     return (
         <div className='login-form'>

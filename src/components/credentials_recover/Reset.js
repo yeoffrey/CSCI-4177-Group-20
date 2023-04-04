@@ -13,15 +13,36 @@ const Reset = () => {
     const navigate = useNavigate();
 
     // submit reset password, go back to login
-    const onSubmit = async (actions) => {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        navigate("/reset-success");
-        actions.resetForm();
+    const onSubmit = async (values, actions) => {
+        try {
+            const response = await fetch(`/api/user/${id}/updatePassword`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    oldPassword: values.current_password,
+                    newPassword: values.reset_password
+                })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message);
+            }
+
+            navigate("/reset-success");
+            actions.resetForm();
+        } catch (error) {
+            console.log(error);
+            actions.setSubmitting(false);
+        }
     };
 
     // formik properties
     const { values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit } = useFormik({
         initialValues: {
+            current_password: "",
             reset_password: "",
             confirm_password: "",
         },
@@ -29,7 +50,7 @@ const Reset = () => {
         onSubmit,
     });
 
-
+    const { id } = useParams();
 
     return (
         <div className="reset-password">
