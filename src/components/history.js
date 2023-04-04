@@ -89,7 +89,7 @@ function History() {
                                             <div className="col-10 text-start">
                                                 <h5 className="book-title" key={book._id + "title"}>{book.title}</h5>
                                                 <h5 className="book-rating" key={book._id + "avgRating"}>Average
-                                                    Rating: {book.averageRating}</h5>
+                                                    Rating: {!book.averageRating ?  ("N/A") : (book.averageRating)}</h5>
                                                 <h5 className="book-pages"
                                                     key={book._id + "pageCount"}>Pages: {book.pageCount}</h5>
                                                 <p className="book-desc"

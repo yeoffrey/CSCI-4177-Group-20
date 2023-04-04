@@ -45,23 +45,18 @@ const bookHistorySchema = new Schema({
     description: String,
     averageRating: Number,
     thumbnail: String,
-    previewLink: String,
     bookID: String
-}, { versionKey: false })
+}, { versionKey: false,
+    _id: false})
 
 const UserHistorySchema = new Schema({
     userID: String,
-    bookHistory: [{
-        type: bookHistorySchema,
-        required: false
-    }]
+    bookHistory: [bookHistorySchema]
     }, { versionKey: false })
-
-const bookHistory = mongoose.model('bookHistory', UserHistorySchema);
+const userHistory = mongoose.model('userHistory', UserHistorySchema);
+const bookHistory = mongoose.model('bookHistory', bookHistorySchema);
 // const data = {
 //      email: 'test@test.ca',
-//      password: 'RNADOMAASDWJDANSD',
-//      email_verified: true,
 //       bookHistory: [{
 //             title: "Flowers",
 //             pageCount: "24",
@@ -146,14 +141,14 @@ app.post('/api/reviews/add', async (req, res) => {
   });
 
 app.get('/api/bookHistory', (req, res) => {
-    bookHistory.find({})
+    userHistory.find({})
         .then(data => res.json(data))
         .catch(error => console.log(error))
 });
 app.get('/api/bookHistory/:id', (req, res) => {
     const { id } = req.params;
 
-    bookHistory.find({ userID: id })
+    userHistory.find({ userID: id })
         .then((data) => {
             console.log('Data: ', data);
             res.json(data);
@@ -162,6 +157,28 @@ app.get('/api/bookHistory/:id', (req, res) => {
             console.log('Error: ', error);
             res.status(500).json({ error });
         });
+});
+
+app.post('/api/bookHistory/add', async (req, res) => {
+    const { averageRating, bookID, description, pageCount, thumbnail, title, userID } = req.body;
+    const newBookHistory = new bookHistory({ title, pageCount, description, averageRating, thumbnail, bookID });
+    const newUserHistory = new userHistory({ userID, bookHistory: [newBookHistory] })
+    if (await userHistory.exists({userID: userID})) {
+        console.log("User Has History, Adding to List (if not already in list)")
+        await userHistory.findOneAndUpdate(
+            {userID: userID},
+            {$addToSet: {bookHistory: newBookHistory}
+        })
+    } else {
+        console.log("New User, Creating new DB entry")
+        try {
+            await newUserHistory.save();
+            res.json({message: 'Book added to history successfully!'});
+        } catch (error) {
+            console.log('Error:', error);
+            res.status(400).json({error});
+        }
+    }
 });
 
 
