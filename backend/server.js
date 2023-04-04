@@ -1,4 +1,4 @@
-/** 
+/**
  * @Author: Yuchen Ye
  * Source URL: https://www.youtube.com/watch?v=OuCrHynro0w
  * The detail of using this source please go to the README file
@@ -56,49 +56,16 @@ const bookHistorySchema = new Schema({
     description: String,
     averageRating: Number,
     thumbnail: String,
-    previewLink: String
-}, { versionKey: false })
+    bookID: String
+}, { versionKey: false,
+    _id: false})
 
 const UserHistorySchema = new Schema({
     userID: String,
-    bookHistory: [{
-        type: bookHistorySchema,
-        required: false
-    }]
+    bookHistory: [bookHistorySchema]
     }, { versionKey: false })
-
-const bookHistory = mongoose.model('bookHistory', UserHistorySchema);
-// const data = {
-//      email: 'test@test.ca',
-//      password: 'RNADOMAASDWJDANSD',
-//      email_verified: true,
-//       bookHistory: [{
-//             title: "Flowers",
-//             pageCount: "24",
-//             description: "FLOWERS DESC",
-//             averageRating: null,
-//             thumbnail: "http://books.google.com/books/content?id=_ojXNuzgHRcC&printsec=frontcover&img=1&zoom=1&edge=curl&imgtk=AFLRE72XJQIKbEALD3DBXtK3HapO7uy_y6eRodbY6nmDaImoDNgFYvyzGE-mt3VxK8NLhp1YN-par32T-crvbif4oNj6IjvY5oPZRVshURUb7sxBzUwc32JET-WKFoXGy1mO4XuTq5vO&source=gbs_api",
-//             previewLink: "String"
-//      },{
-//           title: "GOOGLE BOOK",
-//           pageCount: "260",
-//           description: "googbook DESC",
-//           averageRating: null,
-//           thumbnail: "http://books.google.com/books/content?id=_ojXNuzgHRcC&printsec=frontcover&img=1&zoom=1&edge=curl&imgtk=AFLRE72XJQIKbEALD3DBXtK3HapO7uy_y6eRodbY6nmDaImoDNgFYvyzGE-mt3VxK8NLhp1YN-par32T-crvbif4oNj6IjvY5oPZRVshURUb7sxBzUwc32JET-WKFoXGy1mO4XuTq5vO&source=gbs_api",
-//           previewLink: "String"
-//       }],
-//      status:'available'
-// }
-
-//  const newBookHistory = new bookHistory(data)
-//
-// newBookHistory.save()
-//    .then(savedBook => {
-//      console.log('Book saved successfully:', savedBook);
-//    })
-//    .catch(err => {
-//     console.error(err);
-//    });
+const userHistory = mongoose.model('userHistory', UserHistorySchema);
+const bookHistory = mongoose.model('bookHistory', bookHistorySchema);
 
 // const data = {
 //     title: 'test',
@@ -161,14 +128,14 @@ app.post('/api/reviews/add', async (req, res) => {
   });
 
 app.get('/api/bookHistory', (req, res) => {
-    bookHistory.find({})
+    userHistory.find({})
         .then(data => res.json(data))
         .catch(error => console.log(error))
 });
 app.get('/api/bookHistory/:id', (req, res) => {
     const { id } = req.params;
 
-    bookHistory.find({ userID: id })
+    userHistory.find({ userID: id })
         .then((data) => {
             console.log('Data: ', data);
             res.json(data);
@@ -178,6 +145,29 @@ app.get('/api/bookHistory/:id', (req, res) => {
             res.status(500).json({ error });
         });
 });
+
+app.post('/api/bookHistory/add', async (req, res) => {
+    const { averageRating, bookID, description, pageCount, thumbnail, title, userID } = req.body;
+    const newBookHistory = new bookHistory({ title, pageCount, description, averageRating, thumbnail, bookID });
+    const newUserHistory = new userHistory({ userID, bookHistory: [newBookHistory] })
+    if (await userHistory.exists({userID: userID})) {
+        console.log("User Has History, Adding to List (if not already in list)")
+        await userHistory.findOneAndUpdate(
+            {userID: userID},
+            {$addToSet: {bookHistory: newBookHistory}
+        })
+    } else {
+        console.log("New User, Creating new DB entry")
+        try {
+            await newUserHistory.save();
+            res.json({message: 'Book added to history successfully!'});
+        } catch (error) {
+            console.log('Error:', error);
+            res.status(400).json({error});
+        }
+    }
+});
+
 
 //listen the app
 app.listen(PORT, console.log(`server is starting at ${PORT}`))

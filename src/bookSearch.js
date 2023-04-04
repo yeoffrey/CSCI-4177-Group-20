@@ -24,17 +24,32 @@ const BookSearch = () => {
   };
 
   const handleBorrow = (book) => {
-    setBorrowedBooks([...borrowedBooks, book]);
+    let averageRating;
+    !book.volumeInfo.averageRating ? (averageRating = null) : (averageRating = book.volumeInfo.averageRating)
+    const bookDetails = { title: book.volumeInfo.title, pageCount: book.volumeInfo.pageCount,
+      description: book.volumeInfo.description, averageRating: averageRating, thumbnail: book.volumeInfo.imageLinks.thumbnail,
+      bookID: book.id, userID: "test@test.ca" };
+
+    fetch("http://localhost:8080/api/bookHistory/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(bookDetails),
+    }).then(() => {
+      //setBorrowedBooks([...borrowedBooks, book]);
+    }).catch((error) => console.log(error));
+    let borrowBtn = document.getElementById(`borrow-${book.id}`);
+    borrowBtn.disabled = true;
+    borrowBtn.innerText = "Success!"
   };
 
   return (
     <div>
-      <h3>Borrowed books</h3>
-      <ul>
-        {borrowedBooks.map((book) => (
-          <li key={book.id}>{book.volumeInfo.title}</li>
-        ))}
-      </ul>
+      {/*<h3>Borrowed books</h3>*/}
+      {/*<ul>*/}
+      {/*  {borrowedBooks.map((book) => (*/}
+      {/*    <li key={book.id}>{book.volumeInfo.title}</li>*/}
+      {/*  ))}*/}
+      {/*</ul>*/}
 
       <form onSubmit={HandleSearch} style={{ textAlign: "center" }}>
         <input
@@ -57,7 +72,7 @@ const BookSearch = () => {
           <p>{book.volumeInfo.subtitle}</p>
           <p>{book.volumeInfo.authors?.join(", ")}</p>
           <p>Price: {book.saleInfo.listPrice?.amount}</p>
-          <button onClick={() => handleBorrow(book)}>Borrow</button>
+          <button  id={"borrow-"+book.id} onClick={() => handleBorrow(book)}>Borrow</button>
         </div>
       ))}
     </div>
