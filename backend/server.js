@@ -237,62 +237,59 @@ app.post('/api/login', async (req, res) => {
         }
 
         /**
-         * TODO: the salt should retrieve from the db
-         * then get the stored user.password, compare it with the hashedpassword
-         * computed below.
+         * Retrieve the salt from the db, and get the stored user.password.
+         * Compare it with the hashedpassword computed below.
          */
-        const salt = "";
+        const salt = user.salt;
+        const storedPassword = user.password;
         const hashedPassword = createHash("sha512")
-            .update(password)
-            .update(createHash("sha512").update(salt, "base64").digest("base64"))
-            .digest("base64");
-
-        if (hashedPassword !== user.password) {
-            res.status(401).json({ error: 'Invalid email or password' });
-            return;
+          .update(password)
+          .update(createHash("sha512").update(salt, "base64").digest("base64"))
+          .digest("base64");
+        
+        if (hashedPassword !== storedPassword) {
+          res.status(401).json({ error: 'Invalid email or password' });
+          return;
         }
-
+        
         const token = jwt.sign({ userId: user._id }, secretKey);
         res.json({ token });
+        
     } catch (error) {
         console.log('Error:', error);
         res.status(500).json({ error });
     }
 });
 
-
-
+  
 // Register
 app.post('/api/register', async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      res.status(409).json({ error: 'User with that email already exists' });
-      return;
+    const { email, password } = req.body;
+  
+    try {
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        res.status(409).json({ error: 'User with that email already exists' });
+        return;
+      }
+  
+      const salt = crypto.randomBytes(512).toString('base64');
+      const hashedPassword = createHash("sha512")
+        .update(password)
+        .update(createHash("sha512").update(salt, "base64").digest("base64"))
+        .digest("base64");
+      const newUser = new User({ email, password: hashedPassword, salt });
+      await newUser.save();
+      
+      const token = jwt.sign({ userId: newUser._id }, secretKey);
+      res.json({ token });
+    } catch (error) {
+      console.log('Error:', error);
+      res.status(500).json({ error });
     }
+  });
+  
 
-      /**
-       * salt is randomly generated string with 512 in length
-       * hashedPassword is the final password in db
-       * both salt and hashedPassword are stored in db
-       */
-    const salt = crypto.randomBytes(512).toString('base64');
-    const hashedPassword = createHash("sha512")
-          .update(password)
-          .update(createHash("sha512").update(salt, "base64").digest("base64"))
-          .digest("base64");
-    const newUser = new User({ email, password: hashedPassword, salt });
-    await newUser.save();
-
-    const token = jwt.sign({ userId: newUser._id }, secretKey);
-    res.json({ token });
-  } catch (error) {
-    console.log('Error:', error);
-    res.status(500).json({ error });
-  }
-});
 
 // Get user data
 app.get('/api/user/:id', async (req, res) => {
@@ -331,34 +328,45 @@ app.delete('/api/user/:id', async (req, res) => {
 });
 
 // Update user password
+// Update user password
 app.put('/api/user/:id/updatePassword', async (req, res) => {
-  const { id } = req.params;
-  const { oldPassword, newPassword } = req.body;
-
-  try {
-    const user = await User.findById(id);
-    if (!user) {
-      res.status(404).json({ error: 'User not found' });
-      return;
+    const { id } = req.params;
+    const { oldPassword, newPassword } = req.body;
+  
+    try {
+      const user = await User.findById(id);
+      if (!user) {
+        res.status(404).json({ error: 'User not found' });
+        return;
+      }
+  
+      const hashedOldPassword = createHash("sha512")
+        .update(oldPassword)
+        .update(createHash("sha512").update(user.salt, "base64").digest("base64"))
+        .digest("base64");
+  
+      if (hashedOldPassword !== user.password) {
+        res.status(401).json({ error: 'Invalid password' });
+        return;
+      }
+  
+      const salt = crypto.randomBytes(512).toString('base64');
+      const hashedPassword = createHash("sha512")
+        .update(newPassword)
+        .update(createHash("sha512").update(salt, "base64").digest("base64"))
+        .digest("base64");
+  
+      user.password = hashedPassword;
+      user.salt = salt;
+      await user.save();
+  
+      res.json({ message: 'Password updated successfully' });
+    } catch (error) {
+      console.log('Error:', error);
+      res.status(500).json({ error });
     }
-
-    const hashedOldPassword = hash(oldPassword, user.salt);
-    if (hashedOldPassword !== user.password) {
-      res.status(401).json({ error: 'Invalid password' });
-      return;
-    }
-
-    const { hashedPassword, salt } = hash(newPassword);
-    user.password = hashedPassword;
-    user.salt = salt;
-    await user.save();
-
-    res.json({ message: 'Password updated successfully' });
-  } catch (error) {
-    console.log('Error:', error);
-    res.status(500).json({ error });
-  }
-});
+  });
+  
 
 //listen the app
 app.listen(PORT, console.log(`server is starting at ${PORT}`))
