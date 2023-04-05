@@ -12,7 +12,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.2",
     "cors": "^2.8.5",
+    "crypto-hash": "^2.0.1",
+    "jsonwebtoken": "^9.0.0",
     "nodemon": "^2.0.22"
   }
 }
