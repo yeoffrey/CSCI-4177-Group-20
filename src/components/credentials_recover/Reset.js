@@ -1,35 +1,61 @@
 /**
  * reset password
  * 
- * @author Yuxuan (Hardison) Wang
+ * @autho Yuxuan (Hardison) Wang
  */
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik } from "formik";
 import { resetPasswordSchema } from '../../schemas/schemas.js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import "../../css/credentials.css";
 
 const Reset = () => {
-    const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
+  const { id } = useParams();
 
-    // submit reset password, go back to login
-    const onSubmit = async (actions) => {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        navigate("/reset-success");
-        actions.resetForm();
-    };
+  // submit reset password, go back to login
+  const onSubmit = async (values, actions) => {
+    try {
+      if (values.reset_password !== values.confirm_password) {
+        throw new Error('The new password and confirm password fields do not match.');
+      }
 
-    // formik properties
-    const { values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit } = useFormik({
-        initialValues: {
-            reset_password: "",
-            confirm_password: "",
+      const response = await fetch(`/api/user/${id}/updatePassword`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
         },
-        validationSchema: resetPasswordSchema,
-        onSubmit,
-    });
+        body: JSON.stringify({
+          oldPassword: values.current_password,
+          newPassword: values.reset_password
+        })
+      });
 
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message);
+      }
 
+      navigate("/reset-success");
+      actions.resetForm();
+    } catch (error) {
+      console.log(error);
+      setErrorMessage(error.message);
+      actions.setSubmitting(false);
+    }
+  };
+
+  // formik properties
+  const { values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit } = useFormik({
+    initialValues: {
+      current_password: "",
+      reset_password: "",
+      confirm_password: "",
+    },
+    validationSchema: resetPasswordSchema,
+    onSubmit,
+  });
 
     return (
         <div className="reset-password">

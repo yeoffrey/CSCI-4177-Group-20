@@ -10,7 +10,11 @@ const mongoose = require('mongoose')
 const morgan = require('morgan')
 const path = require('path')
 const cors = require('cors')
-const {boolean} = require("yup");
+const { boolean } = require("yup");
+const bodyParser = require('body-parser');
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
+const secretKey = "secretkey"; // better make it retrieved from db.
 
 const app = express()
 //Use the port number 8080
@@ -62,10 +66,44 @@ const bookHistorySchema = new Schema({
 
 const UserHistorySchema = new Schema({
     userID: String,
-    bookHistory: [bookHistorySchema]
-    }, { versionKey: false })
-const userHistory = mongoose.model('userHistory', UserHistorySchema);
-const bookHistory = mongoose.model('bookHistory', bookHistorySchema);
+    bookHistory: [{
+        type: bookHistorySchema,
+        required: false
+    }]
+}, { versionKey: false })
+
+const bookHistory = mongoose.model('bookHistory', UserHistorySchema);
+// const data = {
+//      email: 'test@test.ca',
+//      password: 'RNADOMAASDWJDANSD',
+//      email_verified: true,
+//       bookHistory: [{
+//             title: "Flowers",
+//             pageCount: "24",
+//             description: "FLOWERS DESC",
+//             averageRating: null,
+//             thumbnail: "http://books.google.com/books/content?id=_ojXNuzgHRcC&printsec=frontcover&img=1&zoom=1&edge=curl&imgtk=AFLRE72XJQIKbEALD3DBXtK3HapO7uy_y6eRodbY6nmDaImoDNgFYvyzGE-mt3VxK8NLhp1YN-par32T-crvbif4oNj6IjvY5oPZRVshURUb7sxBzUwc32JET-WKFoXGy1mO4XuTq5vO&source=gbs_api",
+//             previewLink: "String"
+//      },{
+//           title: "GOOGLE BOOK",
+//           pageCount: "260",
+//           description: "googbook DESC",
+//           averageRating: null,
+//           thumbnail: "http://books.google.com/books/content?id=_ojXNuzgHRcC&printsec=frontcover&img=1&zoom=1&edge=curl&imgtk=AFLRE72XJQIKbEALD3DBXtK3HapO7uy_y6eRodbY6nmDaImoDNgFYvyzGE-mt3VxK8NLhp1YN-par32T-crvbif4oNj6IjvY5oPZRVshURUb7sxBzUwc32JET-WKFoXGy1mO4XuTq5vO&source=gbs_api",
+//           previewLink: "String"
+//       }],
+//      status:'available'
+// }
+
+//  const newBookHistory = new bookHistory(data)
+//
+// newBookHistory.save()
+//    .then(savedBook => {
+//      console.log('Book saved successfully:', savedBook);
+//    })
+//    .catch(err => {
+//     console.error(err);
+//    });
 
 // const data = {
 //     title: 'test',
@@ -115,17 +153,17 @@ app.get('/api/reviews/:id', (req, res) => {
 //Post method to upload the data
 app.post('/api/reviews/add', async (req, res) => {
     const { bookId, name, review } = req.body;
-  
+
     const newReview = new Review({ bookId, name, review });
-    
+
     try {
-      await newReview.save();
-      res.json({ message: 'Review added successfully' });
+        await newReview.save();
+        res.json({ message: 'Review added successfully' });
     } catch (error) {
-      console.log('Error:', error);
-      res.status(400).json({ error });
+        console.log('Error:', error);
+        res.status(400).json({ error });
     }
-  });
+});
 
 app.get('/api/bookHistory', (req, res) => {
     userHistory.find({})
@@ -146,28 +184,196 @@ app.get('/api/bookHistory/:id', (req, res) => {
         });
 });
 
-app.post('/api/bookHistory/add', async (req, res) => {
-    const { averageRating, bookID, description, pageCount, thumbnail, title, userID } = req.body;
-    const newBookHistory = new bookHistory({ title, pageCount, description, averageRating, thumbnail, bookID });
-    const newUserHistory = new userHistory({ userID, bookHistory: [newBookHistory] })
-    if (await userHistory.exists({userID: userID})) {
-        console.log("User Has History, Adding to List (if not already in list)")
-        await userHistory.findOneAndUpdate(
-            {userID: userID},
-            {$addToSet: {bookHistory: newBookHistory}
-        })
-    } else {
-        console.log("New User, Creating new DB entry")
-        try {
-            await newUserHistory.save();
-            res.json({message: 'Book added to history successfully!'});
-        } catch (error) {
-            console.log('Error:', error);
-            res.status(400).json({error});
+/**
+ * authentication stuff
+ * @author Yuxuan(Hardison) Wang
+ */
+const UserSchema = new Schema({
+    // _id: {
+    //     type: Number,
+    //     required: true,
+    //     unique: true,
+    //     autoIncrement: true
+    // },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    salt: {
+        type: String,
+        required: true,
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    email_verified: {
+        type: Boolean,
+        default: false
+    },
+    permission: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user'
+    },
+    bookHistory: [{ type: UserHistorySchema, ref: 'Book' }]
+});
+
+const User = mongoose.model('user', UserSchema);
+
+
+// Login
+app.post('/api/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    console.log('req.body:', req.body);
+
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            res.status(401).json({ error: 'Invalid email or password' });
+            return;
         }
+
+        /**
+         * Retrieve the salt from the db, and get the stored user.password.
+         * Compare it with the hashedpassword computed below.
+         */
+        const salt = user.salt;
+        const storedPassword = user.password;
+        const hashedPassword = crypto.createHash("sha512")
+          .update(password)
+          .update(crypto.createHash("sha512").update(salt, "base64").digest("base64"))
+          .digest("base64");
+        
+        if (hashedPassword !== storedPassword) {
+          res.status(401).json({ error: 'Invalid email or password' });
+          return;
+        }
+        
+        const token = jwt.sign({ userId: user._id }, secretKey);
+        res.json({ token });
+        
+    } catch (error) {
+        console.log('Error:', error);
+        res.status(500).json({ error });
     }
 });
 
+  
+// Register
+app.post('/api/register', async (req, res) => {
+    const { email, password } = req.body;
+
+    console.log(email + " " + password);
+  
+    try {
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        res.status(409).json({ error: 'User with that email already exists' });
+        return;
+      }
+  
+      const salt = crypto.randomBytes(512).toString('base64');
+      const hashedPassword = crypto.createHash("sha512")
+        .update(password)
+        .update(crypto.createHash("sha512").update(salt, "base64").digest("base64"))
+        .digest("base64");
+
+      const newUser = new User({ email, password: hashedPassword, salt });
+
+      console.log(newUser);
+
+      await newUser.save();
+      
+      const token = jwt.sign({ userId: newUser._id }, secretKey);
+      res.json({ token });
+    } catch (error) {
+      console.log('Error:', error);
+      res.status(500).json({ error });
+    }
+  });
+  
+
+
+// Get user data
+app.get('/api/user/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findById(id).select('-password -salt');
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.log('Error:', error);
+    res.status(500).json({ error });
+  }
+});
+
+// Delete user
+app.delete('/api/user/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findByIdAndDelete(id);
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.log('Error:', error);
+    res.status(500).json({ error });
+  }
+});
+
+// Update user password
+// Update user password
+app.put('/api/user/:id/updatePassword', async (req, res) => {
+    const { id } = req.params;
+    const { oldPassword, newPassword } = req.body;
+  
+    try {
+      const user = await User.findById(id);
+      if (!user) {
+        res.status(404).json({ error: 'User not found' });
+        return;
+      }
+  
+      const hashedOldPassword = crypto.createHash("sha512")
+        .update(oldPassword)
+        .update(crypto.createHash("sha512").update(user.salt, "base64").digest("base64"))
+        .digest("base64");
+  
+      if (hashedOldPassword !== user.password) {
+        res.status(401).json({ error: 'Invalid password' });
+        return;
+      }
+  
+      const salt = crypto.randomBytes(512).toString('base64');
+      const hashedPassword = crypto.createHash("sha512")
+        .update(newPassword)
+        .update(crypto.createHash("sha512").update(salt, "base64").digest("base64"))
+        .digest("base64");
+  
+      user.password = hashedPassword;
+      user.salt = salt;
+      await user.save();
+  
+      res.json({ message: 'Password updated successfully' });
+    } catch (error) {
+      console.log('Error:', error);
+      res.status(500).json({ error });
+    }
+  });
+  
+app.use(bodyParser.json());
 
 //listen the app
 app.listen(PORT, console.log(`server is starting at ${PORT}`))

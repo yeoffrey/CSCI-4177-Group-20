@@ -9,16 +9,28 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginSchema } from '../schemas/schemas.js';
 import { useFormik } from 'formik';
 import { FormLabel } from 'react-bootstrap';
+import axios from "axios";
 import "../css/credentials.css";
+
 
 // login form component
 export default function Login() {
     const navigate = useNavigate();
     // submit reset password, go back to login
     const onSubmit = async (values, actions) => {
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        navigate(`/index`);
-        actions.resetForm();
+        try {
+            const response = await axios.post('/api/login', {
+              email: values.username,
+              password: values.password,
+            });
+
+            localStorage.setItem('token', response.data.token);
+
+            navigate('/');
+        } catch (error) {
+            actions.setSubmitting(false);
+            actions.setErrors({ username: 'Invalid email or password', password: 'Invalid email or password' });
+        }
     };
 
     // formik properties
@@ -30,6 +42,8 @@ export default function Login() {
         validationSchema: loginSchema,
         onSubmit,
     });
+
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
 
     return (
         <div className='login-form'>

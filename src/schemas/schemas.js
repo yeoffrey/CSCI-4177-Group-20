@@ -27,8 +27,8 @@ export const resetPasswordSchema = yup.object().shape({
 
 // schema of normal login
 export const loginSchema = yup.object().shape({
-    username: yup.string().matches(stringRegex, {message: "Invalid firstname!"})
-    .required("Enter your firstname here!"),
+    username: yup.string().matches(emailRegex, {message: "Invalid Email"})
+        .required("This field is required"),
 
     password: yup.string().min(8)
     .matches(pwRegex, {message: "Invalid password!"})
