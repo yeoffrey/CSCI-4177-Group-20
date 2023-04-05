@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate } from "react-router-dom";
 import bookImg from '../images/book.svg';
 import page from '../images/file-earmark-break.svg';
 import clock from '../images/clock.svg';
+
 
 function History() {
     /*TESTING WITH HARDCODED BOOKS
@@ -88,15 +89,12 @@ function History() {
                                             <div className="col-10 text-start">
                                                 <h5 className="book-title" key={book._id + "title"}>{book.title}</h5>
                                                 <h5 className="book-rating" key={book._id + "avgRating"}>Average
-                                                    Rating: {book.averageRating}</h5>
+                                                    Rating: {!book.averageRating ?  ("N/A") : (book.averageRating)}</h5>
                                                 <h5 className="book-pages"
                                                     key={book._id + "pageCount"}>Pages: {book.pageCount}</h5>
                                                 <p className="book-desc"
                                                    key={book._id + "desc"}>{dataTrim(book.description)}</p>
-                                                {/* Link to book page does not work, unsure why
-                                    <form action={book.previewLink}>
-                                        <input className="btn btn-primary" type="submit" value="Go to book page"/>
-                                    </form>*/}
+                                                <Link type="button" className="btn btn-primary" to={'/books/'+book.bookID}><h6>Go to book page</h6></Link>
                                             </div>
                                         </div>
                                     </div>

@@ -1,4 +1,4 @@
-/** 
+/**
  * @Author: Yuchen Ye
  * Source URL: https://www.youtube.com/watch?v=OuCrHynro0w
  * The detail of using this source please go to the README file
@@ -60,8 +60,9 @@ const bookHistorySchema = new Schema({
     description: String,
     averageRating: Number,
     thumbnail: String,
-    previewLink: String
-}, { versionKey: false })
+    bookID: String
+}, { versionKey: false,
+    _id: false})
 
 const UserHistorySchema = new Schema({
     userID: String,
@@ -165,14 +166,14 @@ app.post('/api/reviews/add', async (req, res) => {
 });
 
 app.get('/api/bookHistory', (req, res) => {
-    bookHistory.find({})
+    userHistory.find({})
         .then(data => res.json(data))
         .catch(error => console.log(error))
 });
 app.get('/api/bookHistory/:id', (req, res) => {
     const { id } = req.params;
 
-    bookHistory.find({ userID: id })
+    userHistory.find({ userID: id })
         .then((data) => {
             console.log('Data: ', data);
             res.json(data);
