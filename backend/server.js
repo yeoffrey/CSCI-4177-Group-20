@@ -14,7 +14,6 @@ const { boolean } = require("yup");
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-import { createHash } from "crypto";
 const secretKey = "secretkey"; // better make it retrieved from db.
 
 
