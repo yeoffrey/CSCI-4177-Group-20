@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import book from "../images/book.svg";
 import page from "../images/file-earmark-break.svg";
 import clock from "../images/clock.svg";
 
-var loggedin = true;
+const ID = "642dee8dbf65fe3873eb404a";
+const [user, setUser] = useState();
+
+useEffect(() => {
+  // Grab user data.
+  fetch(`http://localhost:8080/api/user/${ID}`)
+  .then((response) => response.json())
+  .then((data) => setUser(data))
+  .catch((error) => console.log(error));
+})
 
 const Profile = () => {
   return (
@@ -22,14 +31,14 @@ const Profile = () => {
             />
           </div>
           <div className="col-9">
-            <h1>$(USERNAME)'s Profile</h1>
+            <h1>{name}'s Profile</h1>
             <div className="container p-2 my-1 text-white">
               <div className="row">
                 <div className="col">
                   <h1>
                     <img src={book} className="img-fluid" alt="" />
                   </h1>
-                  <h2>3 Books read</h2>
+                  <h2>{numOfReview} reviews written</h2>
                 </div>
                 <div className="col">
                   <h1>
