@@ -226,6 +226,8 @@ const User = mongoose.model('user', UserSchema);
 app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
 
+    console.log('req.body:', req.body);
+
     try {
         const user = await User.findOne({ email });
         if (!user) {
@@ -239,9 +241,9 @@ app.post('/api/login', async (req, res) => {
          */
         const salt = user.salt;
         const storedPassword = user.password;
-        const hashedPassword = createHash("sha512")
+        const hashedPassword = crypto.createHash("sha512")
           .update(password)
-          .update(createHash("sha512").update(salt, "base64").digest("base64"))
+          .update(crypto.createHash("sha512").update(salt, "base64").digest("base64"))
           .digest("base64");
         
         if (hashedPassword !== storedPassword) {
@@ -343,9 +345,9 @@ app.put('/api/user/:id/updatePassword', async (req, res) => {
         return;
       }
   
-      const hashedOldPassword = createHash("sha512")
+      const hashedOldPassword = crypto.createHash("sha512")
         .update(oldPassword)
-        .update(createHash("sha512").update(user.salt, "base64").digest("base64"))
+        .update(crypto.createHash("sha512").update(user.salt, "base64").digest("base64"))
         .digest("base64");
   
       if (hashedOldPassword !== user.password) {
@@ -354,9 +356,9 @@ app.put('/api/user/:id/updatePassword', async (req, res) => {
       }
   
       const salt = crypto.randomBytes(512).toString('base64');
-      const hashedPassword = createHash("sha512")
+      const hashedPassword = crypto.createHash("sha512")
         .update(newPassword)
-        .update(createHash("sha512").update(salt, "base64").digest("base64"))
+        .update(crypto.createHash("sha512").update(salt, "base64").digest("base64"))
         .digest("base64");
   
       user.password = hashedPassword;
@@ -370,6 +372,7 @@ app.put('/api/user/:id/updatePassword', async (req, res) => {
     }
   });
   
+app.use(bodyParser.json());
 
 //listen the app
 app.listen(PORT, console.log(`server is starting at ${PORT}`))
