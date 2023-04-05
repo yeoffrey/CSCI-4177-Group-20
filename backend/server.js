@@ -16,8 +16,6 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const secretKey = "secretkey"; // better make it retrieved from db.
 
-
-
 const app = express()
 //Use the port number 8080
 const PORT = process.env.PORT || 8080
@@ -190,12 +188,12 @@ app.get('/api/bookHistory/:id', (req, res) => {
  * @author Yuxuan(Hardison) Wang
  */
 const UserSchema = new Schema({
-    _id: {
-        type: Number,
-        required: true,
-        unique: true,
-        autoIncrement: true
-    },
+    // _id: {
+    //     type: Number,
+    //     required: true,
+    //     unique: true,
+    //     autoIncrement: true
+    // },
     email: {
         type: String,
         required: true,
@@ -264,6 +262,8 @@ app.post('/api/login', async (req, res) => {
 // Register
 app.post('/api/register', async (req, res) => {
     const { email, password } = req.body;
+
+    console.log(email + " " + password);
   
     try {
       const existingUser = await User.findOne({ email });
@@ -273,11 +273,15 @@ app.post('/api/register', async (req, res) => {
       }
   
       const salt = crypto.randomBytes(512).toString('base64');
-      const hashedPassword = createHash("sha512")
+      const hashedPassword = crypto.createHash("sha512")
         .update(password)
-        .update(createHash("sha512").update(salt, "base64").digest("base64"))
+        .update(crypto.createHash("sha512").update(salt, "base64").digest("base64"))
         .digest("base64");
+
       const newUser = new User({ email, password: hashedPassword, salt });
+
+      console.log(newUser);
+
       await newUser.save();
       
       const token = jwt.sign({ userId: newUser._id }, secretKey);
