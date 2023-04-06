@@ -5,17 +5,17 @@ import React, { useState, useEffect } from 'react';
 
 
 export default function Filter() {
-    const [books, setBooks] = useState([]);
+    //const [books, setBooks] = useState([]);
 
-    useEffect(() => {
-        axios.get('http://localhost:8080/api')
-            .then(response => {
-                setBooks(response.data);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }, []);
+//     useEffect(() => {
+//         axios.get('http://localhost:8080/api')
+//             .then(response => {
+//                 setBooks(response.data);
+//             })
+//             .catch(error => {
+//                 console.log(error);
+//             });
+//     }, []);
    
 
     return (

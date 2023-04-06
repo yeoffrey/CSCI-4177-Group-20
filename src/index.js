@@ -6,7 +6,6 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import {
     Navigation,
-    HistoryNone,
     History,
     AddBook,
 } from "./components";
@@ -29,7 +28,6 @@ ReactDOM.render(
         <Routes>
         <Route path="/books/:id" element={<BookDetails />} />
             <Route path="/" element={<Filter />} />
-            <Route path="/historyNone" element={<HistoryNone />} />
             <Route path="/history" element={<History />} />
             <Route path="/addBook" element={<AddBook />} />
 

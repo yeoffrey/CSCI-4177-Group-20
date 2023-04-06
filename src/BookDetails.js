@@ -44,7 +44,7 @@ function BookDetails() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const review = { name, review: body, bookId: id };
-    fetch("http://localhost:8080/api/reviews/add", {
+    fetch("https://cyberlibtest.onrender.com/api/reviews/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(review),

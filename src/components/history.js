@@ -28,7 +28,7 @@ function History() {
     const [history, setHistory] = useState([]);
     useEffect(() => {
         // Fetch bookHistory
-        fetch(`http://localhost:8080/api/bookHistory/${id}`)
+        fetch(`https://cyberlibtest.onrender.com/api/bookHistory/${id}`)
             .then((response) => response.json())
             .then((data) => setHistory(data))
             .catch((error) => console.log(error));

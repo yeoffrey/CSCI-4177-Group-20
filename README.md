@@ -6,13 +6,12 @@
 **[Optional]** If what is being submitted is an individual Lab or Assignment. Otherwise, include a brief one paragraph description about the project.
 
 * *Date Created*: 27 JAN 2023
-* *Last Modification Date*: 5 APR 2023
+* *Last Modification Date*: 31 MAR 2023
 * *Gitlab URL*: <https://git.cs.dal.ca/dhamodaran/4177-group-project>
 * *Host URL*: <https://four177-group-20-project.onrender.com/>
 ## Authors
 
 * [Kaushik Dhamodaran](ks695041@dal.ca) - *(Maintainer)*
-    * Handled bookSearch.js and google API integration
 * [Bryce Wiedemann](br664676@dal.ca) - *(Maintainer)*
     * Handled User stats and History (history.js)
 * [Geoffrey Belcher](Gbelcher@dal.ca) - *(Maintainer)*
@@ -152,19 +151,6 @@ export default googleBooksSearch
 
 ```
 
-This code below was inspiration for the form on Profile.js. It is part of the Bootstrap library. - Geoffrey Belcher
-
-```
-<div class="form-floating mb-3">
-  <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-  <label for="floatingInput">Email address</label>
-</div>
-<div class="form-floating">
-  <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-  <label for="floatingPassword">Password</label>
-</div>
-```
-
 - <!---How---> The code in [webninjadeveloper](https://webninjadeveloper.com/react/build-a-react-book-search-app-using-google-books-api-v3-in-browser-using-typescript/) was implemented by Kaushik Dhamodaran
 - <!---Why---> [webninjadeveloper](https://webninjadeveloper.com/react/build-a-react-book-search-app-using-google-books-api-v3-in-browser-using-typescript/)'s Code was used because it shows how to use google books api to search and display books
 - <!---How---> [webninjadeveloper](https://webninjadeveloper.com/react/build-a-react-book-search-app-using-google-books-api-v3-in-browser-using-typescript/)'s Code was modified by Kaushik Dhamodaran
@@ -184,12 +170,12 @@ I worked on created the user history and stats. This feature entails the user cl
 
 * Geoffrey Belcher - B00798482 - gbelcher@dal.ca
   * Files I created or modified.
-  1. server.js, added user api capabilities. Also worked on bug fixes for a while.
+  1. server.js, added user api capabilities.
   2. Profile.js
-  3. profile.css
+  3. AddReview.js
   * Feature
-  For this project, I am implementing a feature that allows the user to view a Profile page and add a review to a book. I originally wanted the feature to show recommendations for them, however I don't know how to make an algorithm to do that and also I think its a big beyond the scope of the project. I want the profile page to show stats about the user, show what reviews the user has on their profile page, and allow them to update their password.
-  For this assignment, I've added the API functionality in `server.js` to add a user to the DB and to fetch user data by a specific email. As well, I've added a `Profile.js` file which renders the profile page, as well as a `addreview.js` file which allows the user to add a review which shows up on their page. I also spent a while trying to fix our dependancies and get the API in working state for me and my team.
+  For this project, I am implementing a feature that allows the user to view a Profile page and add a review to a book. I originally wanted the feature to show recommendations for them, however I don't know how to make an algorithm to do that and also I think its a big beyond the scope of the project. I want the profile page to show stats about the user, show what reviews the user has on their profile page, and add a review.
+  For this assignment, I've added the API functionality in `server.js` to add a user to the DB and to fetch user data by a specific email. As well, I've added a `Profile.js` file which renders the profile page, as well as a `addreview.js` file which allows the user to add a review which shows up on their page.
 
 * Yuchen Ye - B00883812 -yc786880@dal.ca
   * File I created
@@ -210,21 +196,13 @@ Another feature I've done is connect to mongoDB. I used some dependencies to con
   2. Recover.js
   3. Reset.js
   4. Resetsuccess.js
-  5. server.js (later part as marked)
+  5. auth.js
   6. Login.js
   7. Register.js
   8. schemas.js
   9. CSS files of all above.
 
 > In this group project, I implemented registeration, login, credentials recover/reset and user authentication. 
-> In the previous assignments and proposal, I was always doing the authentication and authorization features. But in previous works, I use self-implemented API for retrieving contents from server. In this assignment, I tried to use auth0 to implement better authentication. However, all the funstions are tested working on the auth0 testbed (data can actually go into our database and retrieved).
-> these API partially working, exist some mongodb connection issue, throw 404 error sometime for no reason.
+> In the previous assignments and proposal, I was always doing the authentication and authorization features. But in previous works, I use self-implemented API for retrieving contents from server. In this assignment, I tried to use auth0 to implement better authentication. However, all the funstions are tested working on the auth0 testbed (data can actually go into our database and retrieved), but not functioning while hook up the api to pages in our project due to dependencies issues. The features will be refined and connected to each page later in the project.
 
 > the testbed and authentication tempelate code from: https://manage.auth0.com/
-
-* Kaushik Dhamodaran - B00855259 - ks695041@dal.ca
-  * Files created or modified:
-  1. bookSearch.js
-  3. bookSearch.css
-  * Feature
-  For this project, I integrated the Google Books API to fetch and display data for given books using the google books API. I was also responsible for the search and display features which would connect to Google Books and retreive book titles from the website. In addition, I aided with the book borrowing feature wherein users can borrow books that they have searched for and add it to their profile, which Bryce then added backend functionality to so it could integrate with his history feature. These features allow for a user to search for books and add it to their collection, though ideally this API would integrate with any library's API that would want to use this website to offer their customers a more unified experience when it comes to borrowing books
