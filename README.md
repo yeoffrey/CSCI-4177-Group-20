@@ -151,6 +151,19 @@ export default googleBooksSearch
 
 ```
 
+This code below was inspiration for the form on Profile.js. It is part of the Bootstrap library. - Geoffrey Belcher
+
+```
+<div class="form-floating mb-3">
+  <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+  <label for="floatingInput">Email address</label>
+</div>
+<div class="form-floating">
+  <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+  <label for="floatingPassword">Password</label>
+</div>
+```
+
 - <!---How---> The code in [webninjadeveloper](https://webninjadeveloper.com/react/build-a-react-book-search-app-using-google-books-api-v3-in-browser-using-typescript/) was implemented by Kaushik Dhamodaran
 - <!---Why---> [webninjadeveloper](https://webninjadeveloper.com/react/build-a-react-book-search-app-using-google-books-api-v3-in-browser-using-typescript/)'s Code was used because it shows how to use google books api to search and display books
 - <!---How---> [webninjadeveloper](https://webninjadeveloper.com/react/build-a-react-book-search-app-using-google-books-api-v3-in-browser-using-typescript/)'s Code was modified by Kaushik Dhamodaran
@@ -170,12 +183,12 @@ I worked on created the user history and stats. This feature entails the user cl
 
 * Geoffrey Belcher - B00798482 - gbelcher@dal.ca
   * Files I created or modified.
-  1. server.js, added user api capabilities.
+  1. server.js, added user api capabilities. Also worked on bug fixes for a while.
   2. Profile.js
-  3. AddReview.js
+  3. profile.css
   * Feature
-  For this project, I am implementing a feature that allows the user to view a Profile page and add a review to a book. I originally wanted the feature to show recommendations for them, however I don't know how to make an algorithm to do that and also I think its a big beyond the scope of the project. I want the profile page to show stats about the user, show what reviews the user has on their profile page, and add a review.
-  For this assignment, I've added the API functionality in `server.js` to add a user to the DB and to fetch user data by a specific email. As well, I've added a `Profile.js` file which renders the profile page, as well as a `addreview.js` file which allows the user to add a review which shows up on their page.
+  For this project, I am implementing a feature that allows the user to view a Profile page and add a review to a book. I originally wanted the feature to show recommendations for them, however I don't know how to make an algorithm to do that and also I think its a big beyond the scope of the project. I want the profile page to show stats about the user, show what reviews the user has on their profile page, and allow them to update their password.
+  For this assignment, I've added the API functionality in `server.js` to add a user to the DB and to fetch user data by a specific email. As well, I've added a `Profile.js` file which renders the profile page, as well as a `addreview.js` file which allows the user to add a review which shows up on their page. I also spent a while trying to fix our dependancies and get the API in working state for me and my team.
 
 * Yuchen Ye - B00883812 -yc786880@dal.ca
   * File I created
