@@ -9,7 +9,7 @@ const Profile = () => {
   const ID = "642dee8dbf65fe3873eb404a";
 
   const handlePasswordUpdate = () => {
-    fetch(`http://localhost:8080/api/user/${ID}/updatePassword`, {
+    fetch(`https://four177-group-20-project-backend.onrender.com/api/user/${ID}/updatePassword`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -42,8 +42,7 @@ const Profile = () => {
 
   useEffect(() => {
     // Grab user data.
-
-    fetch(`http://localhost:8080/api/user/${ID}`)
+    fetch(`https://four177-group-20-project-backend.onrender.com/api/user/${ID}`)
       .then((response) => response.json())
       .then((data) => setUser(data))
       .catch((error) => console.log(error));

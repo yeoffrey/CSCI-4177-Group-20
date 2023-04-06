@@ -35,7 +35,7 @@ const BookSearch = () => {
       description: book.volumeInfo.description, averageRating: averageRating, thumbnail: book.volumeInfo.imageLinks.thumbnail,
       bookID: book.id, userID: "test@test.ca" };
 
-    fetch("https://cyberlibtest.onrender.com/api/bookHistory/add", {
+    fetch("https://four177-group-20-project-backend.onrender.com/api/bookHistory/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(bookDetails),

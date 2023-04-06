@@ -13,7 +13,7 @@ function History() {
     const [history, setHistory] = useState([]);
     useEffect(() => {
         // Fetch bookHistory
-        fetch(`https://cyberlibtest.onrender.com/api/bookHistory/${id}`)
+        fetch(`https://four177-group-20-project-backend.onrender.com/api/bookHistory/${id}`)
             .then((response) => response.json())
             .then((data) => setHistory(data))
             .catch((error) => console.log(error));

@@ -25,7 +25,7 @@ function BookDetails() {
       .catch((error) => console.log(error));
 
     // Fetch reviews
-    fetch(`http://localhost:8080/api/reviews/${id}`)
+    fetch(`https://four177-group-20-project-backend.onrender.com/api/reviews/${id}`)
       .then((response) => response.json())
       .then((data) => setReviews(data))
       .catch((error) => console.log(error));
@@ -44,7 +44,7 @@ function BookDetails() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const review = { name, review: body, bookId: id };
-    fetch("https://cyberlibtest.onrender.com/api/reviews/add", {
+    fetch("https://four177-group-20-project-backend.onrender.com/api/reviews/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(review),
