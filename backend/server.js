@@ -66,45 +66,10 @@ const bookHistorySchema = new Schema({
 
 const UserHistorySchema = new Schema({
     userID: String,
-    bookHistory: [{
-        type: bookHistorySchema,
-        required: false
-    }]
-}, { versionKey: false })
-
-const bookHistory = mongoose.model('bookHistory', UserHistorySchema);
-// const data = {
-//      email: 'test@test.ca',
-//      password: 'RNADOMAASDWJDANSD',
-//      email_verified: true,
-//       bookHistory: [{
-//             title: "Flowers",
-//             pageCount: "24",
-//             description: "FLOWERS DESC",
-//             averageRating: null,
-//             thumbnail: "http://books.google.com/books/content?id=_ojXNuzgHRcC&printsec=frontcover&img=1&zoom=1&edge=curl&imgtk=AFLRE72XJQIKbEALD3DBXtK3HapO7uy_y6eRodbY6nmDaImoDNgFYvyzGE-mt3VxK8NLhp1YN-par32T-crvbif4oNj6IjvY5oPZRVshURUb7sxBzUwc32JET-WKFoXGy1mO4XuTq5vO&source=gbs_api",
-//             previewLink: "String"
-//      },{
-//           title: "GOOGLE BOOK",
-//           pageCount: "260",
-//           description: "googbook DESC",
-//           averageRating: null,
-//           thumbnail: "http://books.google.com/books/content?id=_ojXNuzgHRcC&printsec=frontcover&img=1&zoom=1&edge=curl&imgtk=AFLRE72XJQIKbEALD3DBXtK3HapO7uy_y6eRodbY6nmDaImoDNgFYvyzGE-mt3VxK8NLhp1YN-par32T-crvbif4oNj6IjvY5oPZRVshURUb7sxBzUwc32JET-WKFoXGy1mO4XuTq5vO&source=gbs_api",
-//           previewLink: "String"
-//       }],
-//      status:'available'
-// }
-
-//  const newBookHistory = new bookHistory(data)
-//
-// newBookHistory.save()
-//    .then(savedBook => {
-//      console.log('Book saved successfully:', savedBook);
-//    })
-//    .catch(err => {
-//     console.error(err);
-//    });
-
+    bookHistory: [bookHistorySchema]
+    }, { versionKey: false })
+const userHistory = mongoose.model('userHistory', UserHistorySchema);
+const bookHistory = mongoose.model('bookHistory', bookHistorySchema);
 // const data = {
 //     title: 'test',
 //     author: 'yuchen',
@@ -153,7 +118,6 @@ app.get('/api/reviews/:id', (req, res) => {
 //Post method to upload the data
 app.post('/api/reviews/add', async (req, res) => {
     const { bookId, name, review } = req.body;
-
     const newReview = new Review({ bookId, name, review });
 
     try {
@@ -184,17 +148,33 @@ app.get('/api/bookHistory/:id', (req, res) => {
         });
 });
 
+
+app.post('/api/bookHistory/add', async (req, res) => {
+    const { averageRating, bookID, description, pageCount, thumbnail, title, userID } = req.body;
+    const newBookHistory = new bookHistory({ title, pageCount, description, averageRating, thumbnail, bookID });
+    const newUserHistory = new userHistory({ userID, bookHistory: [newBookHistory] })
+    if (await userHistory.exists({userID: userID})) {
+        console.log("User Has History, Adding to List (if not already in list)")
+        await userHistory.findOneAndUpdate(
+            {userID: userID},
+            {$addToSet: {bookHistory: newBookHistory}
+            })
+    } else {
+        console.log("New User, Creating new DB entry")
+        try {
+            await newUserHistory.save();
+            res.json({message: 'Book added to history successfully!'});
+        } catch (error) {
+            console.log('Error:', error);
+            res.status(400).json({error});
+        }
+    }
+});
 /**
  * authentication stuff
  * @author Yuxuan(Hardison) Wang
  */
 const UserSchema = new Schema({
-    // _id: {
-    //     type: Number,
-    //     required: true,
-    //     unique: true,
-    //     autoIncrement: true
-    // },
     email: {
         type: String,
         required: true,
@@ -207,17 +187,7 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true
-    },
-    email_verified: {
-        type: Boolean,
-        default: false
-    },
-    permission: {
-        type: String,
-        enum: ['user', 'admin'],
-        default: 'user'
-    },
-    bookHistory: [{ type: UserHistorySchema, ref: 'Book' }]
+    }
 });
 
 const User = mongoose.model('user', UserSchema);

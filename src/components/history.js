@@ -75,7 +75,7 @@ function History() {
                     <div id="Content-Main" className="container bg-secondary">
                         <div className="d-flex justify-content-between">
                             <h1>Previous Reads:</h1>
-                            <Link type="button" className="btn btn-info" to='/addbook'><h1>+</h1></Link>
+                            {/*<Link type="button" className="btn btn-info" to='/addbook'><h1>+</h1></Link>*/}
                         </div>
                         <div id="History" className="row p-5 text-center ">
                             {bookHist.bookHistory.map(book => (
@@ -135,12 +135,11 @@ function History() {
                 <div id="Content-Main" className="container bg-secondary">
                     <div className="d-flex justify-content-between">
                         <h1>Previous Reads:</h1>
-                        <Link type="button" className="btn btn-info" to='/addbook'><h1>+</h1></Link>
+                        {/*<Link type="button" className="btn btn-info" to='/addbook'><h1>+</h1></Link>*/}
                     </div>
                     <div id="History" className="row p-5 text-center ">
                         <h3>No Previous books associated with this account.</h3>
-                        <h5>You can add books you have read on your own time by pressing the
-                            "+" icon in the top right.</h5>
+                        <h5>You can add books by pressing the borrow button on the homepage!</h5>
                     </div>
                 </div>
             </div>
