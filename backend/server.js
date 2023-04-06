@@ -92,7 +92,7 @@ const bookHistory = mongoose.model('bookHistory', bookHistorySchema);
 app.use(cors())
 app.use(morgan('tiny'))
 app.use(express.json());
-app.use(express.static(path.resolve(__dirname, '../build')));
+app.use(express.static(__dirname + '/src'));
 
 
 //Here is the routes part, get method to display the data
