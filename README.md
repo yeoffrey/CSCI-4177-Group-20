@@ -6,12 +6,13 @@
 **[Optional]** If what is being submitted is an individual Lab or Assignment. Otherwise, include a brief one paragraph description about the project.
 
 * *Date Created*: 27 JAN 2023
-* *Last Modification Date*: 31 MAR 2023
+* *Last Modification Date*: 5 APR 2023
 * *Gitlab URL*: <https://git.cs.dal.ca/dhamodaran/4177-group-project>
 * *Host URL*: <https://four177-group-20-project.onrender.com/>
 ## Authors
 
 * [Kaushik Dhamodaran](ks695041@dal.ca) - *(Maintainer)*
+    * Handled bookSearch.js and google API integration
 * [Bryce Wiedemann](br664676@dal.ca) - *(Maintainer)*
     * Handled User stats and History (history.js)
 * [Geoffrey Belcher](Gbelcher@dal.ca) - *(Maintainer)*
@@ -220,3 +221,10 @@ Another feature I've done is connect to mongoDB. I used some dependencies to con
 > these API partially working, exist some mongodb connection issue, throw 404 error sometime for no reason.
 
 > the testbed and authentication tempelate code from: https://manage.auth0.com/
+
+* Kaushik Dhamodaran - B00855259 - ks695041@dal.ca
+  * Files created or modified:
+  1. bookSearch.js
+  3. bookSearch.css
+  * Feature
+  For this project, I integrated the Google Books API to fetch and display data for given books using the google books API. I was also responsible for the search and display features which would connect to Google Books and retreive book titles from the website. In addition, I aided with the book borrowing feature wherein users can borrow books that they have searched for and add it to their profile, which Bryce then added backend functionality to so it could integrate with his history feature. These features allow for a user to search for books and add it to their collection, though ideally this API would integrate with any library's API that would want to use this website to offer their customers a more unified experience when it comes to borrowing books
