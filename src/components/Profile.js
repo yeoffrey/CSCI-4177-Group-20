@@ -5,20 +5,31 @@ const Profile = () => {
   const [user, setUser] = useState();
   const [oldPassword, setOldPassword] = useState();
   const [newPassword, setNewPassword] = useState();
+
   const ID = "642dee8dbf65fe3873eb404a";
 
   const handlePasswordUpdate = () => {
-    fetch(`localhost:8080/api/user/${user}/updatePassword`, {
+    fetch(`http://localhost:8080/api/user/${ID}/updatePassword`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: {
+      body: JSON.stringify({
         oldPassword: oldPassword,
         newPassword: newPassword
+      })
+    })
+    .then(response => {
+      if (response.ok) {
+        // Handle successful response
+        console.log("Password updated successfully.");
+
+      } else {
+        // Handle failed response
+        console.log("Password update failed.");
       }
     })
-    .catch(error => console.error(error));;
+    .catch(error => console.error(error));
   };
 
   const handleOldPasswordChange = (event) => {
@@ -31,7 +42,8 @@ const Profile = () => {
 
   useEffect(() => {
     // Grab user data.
-    fetch(`localhost:8080/api/user/${ID}`)
+
+    fetch(`http://localhost:8080/api/user/${ID}`)
       .then((response) => response.json())
       .then((data) => setUser(data))
       .catch((error) => console.log(error));
@@ -39,20 +51,16 @@ const Profile = () => {
 
   return (
     <div className="container">
+      {user && user.email_verified == false ? <div className="alert alert-warning" role="alert">
+                  Your email is not verified! Please check your inbox and junk/spam folders.
+                </div> : <></>}
       {user ? (
         <div className="row">
           <h1 className="profile-header">Profile Settings</h1>
           <div className="col-6">
             <p className="profile-item">
               {oldPassword} {newPassword}
-              Email: {user.email}{" "}
-              {user.email_verified ? (
-                <span>verified</span>
-              ) : (
-                <div className="alert alert-warning" role="alert">
-                  Your email is not verified! Please check your inbox and junk/spam folders.
-                </div>
-              )}
+              Email: {user.email}
             </p>
           </div>
           <div className="text-center">
